@@ -1,0 +1,13 @@
+node_modules
+.idea
+*.iml
+.awcache
+coverage
+npm-debug.log
+build
+dist
+.vscode/*
+.chrome
+.npmrc
+local-packages.json
+package-lock.json
