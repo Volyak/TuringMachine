@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Popup from '../common/popup'
 import EditForm from './changeForm'
@@ -20,12 +20,12 @@ const ChangeFormController = (props) => {
             }
         </div>
     )
-}
+};
 
 ChangeFormController.propTypes={
     isOpen: PropTypes.bool.isRequired,
     id: PropTypes.string,
-    close: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired
 };
 
 export default ChangeFormController;

@@ -54,7 +54,7 @@ SignInForm.propTypes = {
     enterUsername: PropTypes.func.isRequired,
     enterPassword: PropTypes.func.isRequired,
     username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired
 };
 
 export default connect(state => ({

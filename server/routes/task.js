@@ -5,7 +5,7 @@ import {
     addTask,
     updateTask,
     deleteTask,
-    getAllTasksWithoutTests
+    getAll
 } from '../mongoose/api/task'
 
 const router = express.Router();
@@ -41,7 +41,7 @@ router.route('/api/tasks/:taskId')
 router.route('/api/tasks')
     .all(authenticationCheckMiddleware)
     .get((req, res) => {
-        return getAllTasksWithoutTests()
+        return getAll()
             .then((tasks, error) => {
             if (error) {
                 return res.status(500).end();

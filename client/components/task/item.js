@@ -35,7 +35,6 @@ class TaskListItem extends Component {
                 <Link to={'/tasks/' + id}>{name}</Link>
                 <button onClick={this.openEditForm}>edit</button>
                 <button onClick={this.deleteTask}>X</button>
-
                 <ChangeFormController isOpen={editFormIsOpen} id={id} close={this.closeEditForm}/>
             </div>
         )
