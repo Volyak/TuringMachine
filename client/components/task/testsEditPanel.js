@@ -25,6 +25,7 @@ class TestsEditPanel extends Component {
                 {
                     tests.map((test, index) =>
                         <div key={index}>
+                            <div>{index}:</div>
                             <input
                                 id={index + '_input'}
                                 type='text'

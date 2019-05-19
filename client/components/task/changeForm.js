@@ -99,23 +99,26 @@ class TaskChangeForm extends Component {
 
         return (
             <div className={'form'}>
+                <label htmlFor={'name'}>Название</label>
                 <input
                     type='text'
-                    placeholder='name'
+                    id='name'
                     value={name}
                     className={'input'}
                     onChange={this.handleChangedName}
                 />
+                <label htmlFor={'description'}>Описание</label>
                 <input
                     type='text'
-                    placeholder='description'
+                    id='description'
                     value={description}
                     className={'input'}
                     onChange={this.handleChangedDescription}
                 />
+                <label htmlFor={'alphabet'}>Алфавит</label>
                 <input
                     type='text'
-                    placeholder='alphabet'
+                    id='alphabet'
                     value={alphabet}
                     className={'input'}
                     onChange={this.handleChangedAlphabet}

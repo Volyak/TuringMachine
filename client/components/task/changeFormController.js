@@ -9,7 +9,7 @@ const ChangeFormController = (props) => {
     const {isOpen, id, close} = props;
 
     return (
-        <div>
+        <React.Fragment>
             {
                 isOpen &&
                 <Popup>
@@ -18,7 +18,8 @@ const ChangeFormController = (props) => {
                     </div>
                 </Popup>
             }
-        </div>
+        </React.Fragment>
+
     )
 };
 

@@ -33,8 +33,8 @@ class TaskList extends Component {
 
         return (
             <div>
-                <List/>
                 <button onClick={this.openAddingForm}>Add Task</button>
+                <List/>
                 <ChangeFormController isOpen={addingFormIsOpen} close={this.closeAddingForm}/>
             </div>
         )

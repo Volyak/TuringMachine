@@ -31,7 +31,7 @@ class Task extends Component {
             <div>
                 <h3> {name} </h3>
                 <h3> {description} </h3>
-                <h3> {alphabet} </h3>
+                <h3> Алфавит: {alphabet} </h3>
                 {
                     alphabet &&
                     <Table taskId={id} alphabet={alphabet}/>

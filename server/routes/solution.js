@@ -24,7 +24,7 @@ router.route('/api/solutions')
             for (let i = 0, l = solutions.length; i < l; i++) {
                 const task = await getTaskNameById(solutions[i].taskId);
                 data.push({
-                    id: solutions[i]._id,
+                    _id: solutions[i]._id,
                     taskName: task.name,
                     taskId: solutions[i].taskId,
                     username: solutions[i].username,
