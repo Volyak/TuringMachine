@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import parseTable from '../../utilities/parseTable'
 import { postSolution } from '../../services/solutionApi'
 
+import './css/table.css';
+
 class Table extends Component {
     constructor(props) {
         super(props);
@@ -79,7 +81,7 @@ class Table extends Component {
 
         const head = cols.map((col) =>
             <th key={col}>{col}
-                <button id={"delete_" + col} onClick={this.removeColumn}>X</button>
+                <button className={'table-container__delete-btn'} id={"delete_" + col} onClick={this.removeColumn}>X</button>
             </th>
         );
 
@@ -103,7 +105,7 @@ class Table extends Component {
             <label>{this.state.resultOfSending.isDone.toString()}</label>;
 
         return (
-            <div>
+            <div className={'table-container'}>
                 <table>
                     <thead>
                         <tr>

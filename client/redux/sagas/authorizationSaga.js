@@ -25,8 +25,9 @@ function* watchSignOut() {
 function* signInSaga(action) {
     try {
         let { username, password } = action.payload;
-        username = yield call(signIn, username, password);
-        yield put(actions.signInSuccess(username));
+        const user = yield call(signIn, username, password);
+        console.log(JSON.stringify(user));
+        yield put(actions.signInSuccess(user));
     }
     catch (error) {
         yield put(actions.signInFailure(error))
@@ -35,7 +36,7 @@ function* signInSaga(action) {
 
 function* signUpSaga(action) {
     try {
-        let { username, password } = action.payload;
+        let { username, password} = action.payload;
         username = yield call(signUp, username, password);
         yield put(actions.signUpSuccess(username));
     }

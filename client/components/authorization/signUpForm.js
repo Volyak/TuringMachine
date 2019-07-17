@@ -38,7 +38,6 @@ class SignUpForm extends Component {
                     onChange={this.handleChangedPassword}
                     value={password}
                     className={'sign__input'}/>
-
                 <div className={'sign__button-panel'}>
                     <button onClick={this.signUp} className={'sign__button'}>Sign up</button>
                     <button onClick={closeForm} className={'sign__button'}>Cancel</button>
@@ -59,5 +58,5 @@ SignUpForm.propTypes = {
 
 export default connect(state => ({
     username: state.authorization.username,
-    password: state.authorization.password
+    password: state.authorization.password,
 }), actions)(SignUpForm)

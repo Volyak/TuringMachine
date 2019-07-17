@@ -1,0 +1,16 @@
+.task__list {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 89.7%;
+    padding: 5%;
+    background: white;
+}
+
+.task__list > button {
+    align-self: flex-end;
+    background: lightskyblue;
+    border: none;
+    color: white;
+    height: 30px;
+}

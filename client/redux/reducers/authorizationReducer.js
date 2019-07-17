@@ -4,7 +4,7 @@ import * as actions from '../actions/authorizationActions'
 const initialState = {
     isOpen: false,
     username: '',
-    password: ''
+    password: '',
 };
 
 const authorizationReducer = handleActions(
@@ -80,7 +80,7 @@ const authorizationReducer = handleActions(
         [actions.enterUsername]: (state, {payload}) => ({
             ...state,
             username: payload.username
-        }),
+        })
     },
     initialState
 );

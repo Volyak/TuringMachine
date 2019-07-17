@@ -124,7 +124,7 @@ class TaskChangeForm extends Component {
                     onChange={this.handleChangedAlphabet}
                 />
                 <TestsEditPanel tests={tests} delete={this.deleteTest} handleChanged={this.handleChangedTest}/>
-                <div>
+                <div className={'form__add-panel'}>
                     <input
                         id='newInput'
                         type='text'
@@ -137,11 +137,11 @@ class TaskChangeForm extends Component {
                         placeholder='output'
                         value={newOutput}
                         onChange={this.handleChangedNewTest}/>
-                    <button onClick={this.addTest} className={'button'}>Add Test</button>
+                    <button onClick={this.addTest}>+</button>
                 </div>
-                <div className={'button-panel'}>
-                    <button onClick={this.sendData} className={'button'}>Send</button>
-                    <button onClick={this.props.close} className={'button'}>Close</button>
+                <div className={'form__button-panel'}>
+                    <button onClick={this.sendData}>Send</button>
+                    <button onClick={this.props.close}>Close</button>
                 </div>
             </div>
         )
@@ -153,7 +153,7 @@ TaskChangeForm.propTypes = {
     id: PropTypes.string,
     close: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
-    addTask: PropTypes.func.isRequired
+    addTask: PropTypes.func.isRequired,
 };
 
 export default connect((state, ownProps) => ({

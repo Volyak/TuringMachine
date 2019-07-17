@@ -10,8 +10,11 @@ export default function playTest(solution, test) {
         const currentSymbol = input[index];
         let programm = solution[state][currentSymbol];
 
+        //тут ошибка
         if (programm.writeSymbol)
             programmOutput = replaceAt(programmOutput,index,programm.writeSymbol);
+
+        //Ошибка если нет состояния
 
         if (programm.move === "S") {
             step++;
@@ -21,6 +24,7 @@ export default function playTest(solution, test) {
             programm.move === "R" ? index++ : index--;
         }
 
+        //Ошибка если состояние больше чем в таблице
         state = programm.nextState-1;
         step++;
     }

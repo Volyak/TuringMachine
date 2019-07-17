@@ -5,8 +5,11 @@ import PropTypes from 'prop-types';
 import * as actions from "../../redux/actions/taskActions";
 import getList from '../common/list'
 import ChangeFormController from './changeFormController'
+import groups from '../../const/groups'
+import rights from '../../const/rights'
+import rightChecker from '../../utilities/rightChecker'
 
-import '../common/css/list.css'
+import './css/list.css'
 
 class TaskList extends Component {
     constructor(props) {
@@ -27,13 +30,15 @@ class TaskList extends Component {
     }
 
     render() {
-        const {tasks} = this.props;
+        const {tasks, canAddTask} = this.props;
         const List = getList(TaskListItem, tasks);
         const {addingFormIsOpen} = this.state;
-
+        console.log(canAddTask)
         return (
-            <div>
+            <div className={'task__list'}>
+                {canAddTask &&
                 <button onClick={this.openAddingForm}>Add Task</button>
+                }
                 <List/>
                 <ChangeFormController isOpen={addingFormIsOpen} close={this.closeAddingForm}/>
             </div>
@@ -43,9 +48,11 @@ class TaskList extends Component {
 
 TaskList.propTypes = {
     tasks: PropTypes.array.isRequired,
-    getTasks: PropTypes.func.isRequired
+    getTasks: PropTypes.func.isRequired,
+    canAddTask: PropTypes.bool.isRequired
 };
 
 export default connect(state => ({
-    tasks: state.task.tasks
+    tasks: state.task.tasks,
+    canAddTask: rightChecker(state.application.groups, groups.Task, rights.Add, 1)
 }), actions)(TaskList)

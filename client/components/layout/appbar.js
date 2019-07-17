@@ -4,37 +4,30 @@ import connect from "react-redux/es/connect/connect";
 import Navigation from '../common/navigation'
 import Controls from '../authorization/controls'
 
-import styled from 'styled-components'
+import './css/appbar.css'
 
 const AppBar = (props) => {
     return (
-        <AppBarWrapper>
+        <div className={'appbar'}>
             {
                 props.authorized &&
                 <Navigation/>
             }
+            <label>{props.username}</label>
+            <label>{props.role}</label>
             <Controls/>
-        </AppBarWrapper>
+        </div>
     )
 }
 
 AppBar.propTypes = {
-    authorized: PropTypes.bool.isRequired
+    authorized: PropTypes.bool.isRequired,
+    username: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired
 };
 
 export default connect(state => ({
-    authorized: state.application.authorized
+    authorized: state.application.authorized,
+    username: state.application.username,
+    role: state.application.role
 }), null)(AppBar)
-
-const AppBarWrapper = styled.div`
-    top: 0; 
-    left: auto; 
-    right: 0; 
-    position: fixed; 
-
-    background: cadetblue; 
-    color: whitesmoke; 
-    width: 100%; 
-    display: flex; 
-    flex-direction: row;
-    `;

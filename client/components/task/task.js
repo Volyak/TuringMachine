@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {getTask} from '../../services/taskApi'
 import Table from '../table/table'
 
+import './css/task.css';
+
 class Task extends Component {
     constructor(props){
         super(props);
@@ -28,10 +30,10 @@ class Task extends Component {
         const {id, name, description, alphabet} = this.state;
 
         return (
-            <div>
+            <div className={'task'}>
                 <h3> {name} </h3>
-                <h3> {description} </h3>
-                <h3> Алфавит: {alphabet} </h3>
+                <div> {description} </div>
+                <div> Алфавит: {alphabet} </div>
                 {
                     alphabet &&
                     <Table taskId={id} alphabet={alphabet}/>

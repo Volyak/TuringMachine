@@ -6,12 +6,15 @@ import {
     getAllByAuthorId,
     getAllByTaskId,
     addSolution,
-    updateSolution
+    updateSolution,
+    deleteSolution
 } from '../mongoose/api/solution'
 import {getUserIdByUsername} from "../mongoose/api/user";
 import {getTaskById, getTaskNameById, getTaskByIdWithoutTests} from "../mongoose/api/task";
+import {checkRight, getPriority} from "../mongoose/api/role"
 import runTests from '../utils/runTests'
 import formatTable from '../utils/formatTableForDB'
+import rights from '../const/rights'
 
 const router = express.Router();
 
@@ -46,17 +49,22 @@ router.route('/api/tasks/:taskId/solutions')
         })
     })
     .post((req, res) => {
-        const {body: {solution}, user: {username}, params: {taskId}} = req;
-
+        const {body: {solution}, user: {username, role}, params: {taskId}} = req;
         (async () => {
+            let hasRight = await checkRight(role, "task", "sendSolution", 1);
+            if (!hasRight)
+                return res.status(403).end();
+
+
             const task = await getTaskById(taskId);
             const numberOfFailedTest = runTests(solution, task.tests);
             const table = formatTable(solution, task.alphabet);
-
+            const priority = await getPriority(role, "task", "sendSolution");
             const addedSolution = await addSolution({
                 table,
                 taskId,
                 username,
+                priority,
                 isDone: numberOfFailedTest === 0,
                 numberOfFailedTest
             });
@@ -80,15 +88,29 @@ router.route('/api/solutions/:solutionId')
         })()
     })
     .post((req, res) => {
-        const {body: {solution}, params: {solutionId}} = req;
+        const {body: {solution}, params: {solutionId}, user: {role}} = req;
         (async () => {
-            const foundSolution = await getSolutionById(solutionId);
-            if (foundSolution) {
+            const foundedSolution = await getSolutionById(solutionId);
+
+            if (foundedSolution && checkRight(role, rights.canUpdateSolution, foundedSolution.priority)) {
                 await updateSolution(solutionId, solution);
                 return res.status(200).end();
+            } else {
+                return res.status(403).end();
             }
-            else {
-                return res.status(500).end();
+        })()
+    })
+    .delete((req, res) => {
+        const {params: {solutionId}, user: {role}} = req;
+
+        (async () => {
+            const foundedSolution = await getSolutionById(solutionId);
+
+            if (foundedSolution && checkRight(role, rights.canDeleteSolution, foundedSolution.priority)) {
+                await deleteSolution(solutionId);
+                return res.status(200).end();
+            } else {
+                return res.status(403).end();
             }
         })()
     });

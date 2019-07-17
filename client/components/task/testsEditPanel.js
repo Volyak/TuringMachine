@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
+import './css/editTaskForm.css'
+
 class TestsEditPanel extends Component {
 
     handleChanged = (event) => {
@@ -21,11 +23,11 @@ class TestsEditPanel extends Component {
     render() {
         const {tests} = this.props;
         return (
-            <div>
+            <div className={'test-edit-panel'}>
                 {
                     tests.map((test, index) =>
                         <div key={index}>
-                            <div>{index}:</div>
+                            <span>{index}:</span>
                             <input
                                 id={index + '_input'}
                                 type='text'

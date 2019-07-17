@@ -13,7 +13,8 @@ import { User } from './mongoose/api/user'
 import authorizationRouter from './routes/authorization'
 import taskRouter from './routes/task'
 import solutionRouter from './routes/solution'
-
+import userRouter from './routes/user'
+import roleRouter from './routes/role'
 const app = express();
 
 app.set('port', serverConfig.port);
@@ -33,6 +34,8 @@ passport.deserializeUser(User.deserializeUser());
 app.use(authorizationRouter);
 app.use(taskRouter);
 app.use(solutionRouter);
+app.use(userRouter);
+app.use(roleRouter);
 
 app.get('/*', (req, res) => {
     res.send(template({

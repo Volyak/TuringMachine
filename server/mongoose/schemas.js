@@ -4,21 +4,28 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 export const UserSchema = new Schema({
-    username:{
+    username: {
         type: String,
         unique: true,
         required: true
     },
-    password:{
+    password: {
+        type: String
+    },
+    role: {
         type: String
     }
 });
 
 export const TaskSchema = new Schema({
     name: {
-     type: String,
-     unique: true,
-     required: true
+        type: String,
+        unique: true,
+        required: true
+    },
+    priority: {
+        type: Number,
+        required: true
     },
     description: {
         type: String,
@@ -28,7 +35,7 @@ export const TaskSchema = new Schema({
         type: String,
         required: true
     },
-    tests:[
+    tests: [
         {
             input: {
                 type: String,
@@ -51,20 +58,24 @@ export const SolutionSchema = new Schema({
         type: String,
         required: true
     },
+    priority: {
+        type: Number,
+        required: true
+    },
     table: [
-            [
-                {
-                    writeSymbol: String,
-                    move: {
-                        type: String,
-                        required: true
-                    },
-                    nextState: {
-                        type: Number,
-                        required: true
-                    }
+        [
+            {
+                writeSymbol: String,
+                move: {
+                    type: String,
+                    required: true
+                },
+                nextState: {
+                    type: Number,
+                    required: true
                 }
-            ]
+            }
+        ]
     ],
     isDone: {
         type: Boolean,
@@ -75,3 +86,32 @@ export const SolutionSchema = new Schema({
         required: true
     }
 });
+
+export const RoleSchema = new Schema({
+        name: {
+            type: String,
+            unique: true,
+            required: true
+        },
+        groups: [
+            {
+                name: {
+                    type: String,
+                    required: true
+                },
+                rights: [
+                    {
+                        name: {
+                            type: String,
+                            required: true
+                        },
+                        priority: {
+                            type: Number,
+                            required: true
+                        }
+                    }
+                ]
+            }
+        ]
+    })
+;
