@@ -58,7 +58,8 @@ router.route('/api/roles/:roleId')
 
         (async () => {
             const foundedRole = await getRoleById(roleId);
-            if (foundedRole && checkRight(role, groups.Role, rights.Update, foundedRole.priority)) {
+            let hasRight = await checkRight(role, groups.Role, rights.Update, foundedRole.priority);
+            if (foundedRole && hasRight) {
                 await updateRole(roleId, newRole);
                 return res.status(200).end();
             } else {
@@ -70,7 +71,8 @@ router.route('/api/roles/:roleId')
         const {params: {roleId}, user: {role}} = req;
         (async () => {
             const foundedRole = await getRoleById(roleId);
-            if (foundedRole && checkRight(role, groups.Role, rights.Delete, foundedRole.priority)) {
+            let hasRight = await checkRight(role, groups.Role, rights.Delete, foundedRole.priority);
+            if (foundedRole && hasRight) {
                 await deleteRole(roleId);
                 return res.status(200).end();
             } else {

@@ -31,7 +31,8 @@ router.route('/api/users/:userId')
     (async () => {
         const foundedUser = await getUserById(userId);
         const foundedUserPriority = await getUserPriority(foundedUser.role);
-        if (foundedUser && checkRight(role, groups.User, rights.Update, foundedUserPriority)) {
+        let hasRight = await checkRight(role, groups.User, rights.Update, foundedUserPriority);
+        if (foundedUser && hasRight) {
             await updateUser(userId, user);
             return res.status(200).end();
         } else {
@@ -45,7 +46,8 @@ router.route('/api/users/:userId')
     (async () => {
         const foundedUser = await getUserById(userId);
         const foundedUserPriority = await getUserPriority(foundedUser.role);
-        if (foundedUser && checkRight(role, groups.User, rights.Delete, foundedUserPriority)) {
+        let hasRight = await checkRight(role, groups.User, rights.Delete, foundedUserPriority);
+        if (foundedUser && hasRight) {
             await deleteAllByUsername(foundedUser.username);
             //await deleteUser(userId);
             return res.status(200).end();

@@ -91,8 +91,8 @@ router.route('/api/solutions/:solutionId')
         const {body: {solution}, params: {solutionId}, user: {role}} = req;
         (async () => {
             const foundedSolution = await getSolutionById(solutionId);
-
-            if (foundedSolution && checkRight(role, groups.Solution, rights.Update, foundedSolution.priority)) {
+            let hasRight = await checkRight(role, groups.Solution, rights.Update, foundedSolution.priority);
+            if (foundedSolution && hasRight) {
                 await updateSolution(solutionId, solution);
                 return res.status(200).end();
             } else {
@@ -105,7 +105,8 @@ router.route('/api/solutions/:solutionId')
 
         (async () => {
             const foundedSolution = await getSolutionById(solutionId);
-            if (foundedSolution && checkRight(role, groups.Solution, rights.Delete, foundedSolution.priority)) {
+            let hasRight = await checkRight(role, groups.Solution, rights.Delete, foundedSolution.priority);
+            if (foundedSolution && hasRight) {
                 await deleteSolution(solutionId);
                 return res.status(200).end();
             } else {

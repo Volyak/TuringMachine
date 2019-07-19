@@ -54,6 +54,5 @@ export const getUserPriority = async (role) => { //change
         for (let k = rights.length, j = 0; j < k; j++)
             maxPriority = rights[j].priority > maxPriority ? rights[j].priority : maxPriority;
     }
-    console.log(maxPriority);
     return maxPriority;
 };

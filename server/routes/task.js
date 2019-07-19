@@ -27,7 +27,8 @@ router.route('/api/tasks/:taskId')
         const {body: {task}, params: {taskId}, user: {role}} = req;
         (async () => {
             const foundedTask = await getTaskById(taskId);
-            if (foundedTask && checkRight(role, groups.Task, rights.Update, foundedTask.priority)) {
+            let hasRight = checkRight(role, groups.Task, rights.Update, foundedTask.priority);
+            if (foundedTask && hasRight) {
                 await updateTask(taskId, task);
                 return res.status(200).end();
             } else {
@@ -39,9 +40,10 @@ router.route('/api/tasks/:taskId')
         const {params: {taskId}, user:{role}} = req;
         (async () => {
             const foundedTask = await getTaskById(taskId);
-            if(foundedTask && checkRight(role, groups.Task, rights.Delete, foundedTask.priority)) {
+            let hasRight = checkRight(role, groups.Task, rights.Delete, foundedTask.priority);
+            if(foundedTask && hasRight) {
                 await deleteAllByTaskId(taskId);
-                //await deleteTask(taskId);
+                await deleteTask(taskId);
                 return res.status(200).end();
             } else {
                 return res.status(403).end();
