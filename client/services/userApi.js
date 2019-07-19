@@ -26,3 +26,35 @@ export const getUser = (id) => {
             }
         })
 };
+
+export const editUser = (id, user) => {
+    return fetch('/api/users/' + id, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user})
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return true;
+            } else {
+                throw response.status
+            }
+        })
+};
+
+export const deleteUser = (id) => {
+    return fetch('/api/users/' + id, {
+        method: 'DELETE',
+        credentials: 'include'
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response;
+            } else {
+                throw response.status
+            }
+        })
+};

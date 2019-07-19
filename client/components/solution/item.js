@@ -1,19 +1,33 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import {connect} from 'react-redux'
+import * as actions from '../../redux/actions/solutionActions'
 
-const SolutionListItem = (props) => {
-    const {id, taskId, taskName, username, isDone} = props;
+class SolutionListItem extends Component  {
+    constructor(props) {
+        super(props);
+    }
 
-    return (
-        <div className={'item'}>
-            <Link to={'/tasks/' + taskId + '/solutions/' + id}>{taskName + ': ' + username}</Link>
-            {
-                isDone &&
-                <div>DONE</div>
-            }
-        </div>
-    )
+    deleteSolution= () => {
+        const {id, deleteSolution} = this.props;
+        deleteSolution({id});
+    };
+
+    render() {
+        const {id, taskId, taskName, username, isDone} = this.props;
+
+        return (
+            <div className={'item'}>
+                <Link to={'/tasks/' + taskId + '/solutions/' + id}>{taskName + ': ' + username}</Link>
+                {
+                    isDone &&
+                    <div>DONE</div>
+                }
+                <button onClick={this.deleteSolution}>X</button>
+            </div>
+        )
+    }
 }
 
 SolutionListItem.propTypes = {
@@ -21,7 +35,8 @@ SolutionListItem.propTypes = {
     taskId: PropTypes.string.isRequired,
     taskName: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    isDone: PropTypes.bool.isRequired
+    isDone: PropTypes.bool.isRequired,
+    deleteSolution: PropTypes.func.isRequired
 };
 
-export default SolutionListItem;
+export default connect(null,actions)(SolutionListItem);

@@ -15,8 +15,8 @@ export const getAllByTaskId = async (taskId) => {
     return Solution.find({ taskId: taskId});
 };
 
-export const getAllByAuthorId = async (authorId) => {
-    return Solution.find({ authorId: authorId});
+export const getAllByUsername = async (username) => {
+    return Solution.find({ username: username});
 };
 
 export const addSolution = async (newSolution) => {
@@ -33,4 +33,12 @@ export const updateSolution = async (solutionId, solutionNewState) => {
 
 export const deleteSolution = async (solutionId) => {
     return Solution.findByIdAndRemove(solutionId).exec();
+};
+
+export const deleteAllByUsername = async (username) => {
+    return Solution.deleteMany({ username: username});
+};
+
+export const deleteAllByTaskId = async (taskId) => {
+    return Solution.deleteMany({ taskId: taskId});
 };

@@ -3,18 +3,18 @@ import authenticationCheckMiddleware from "../middlewares/authenticationCheck";
 import {
     getAll,
     getSolutionById,
-    getAllByAuthorId,
+    getAllByUsername,
     getAllByTaskId,
     addSolution,
     updateSolution,
     deleteSolution
 } from '../mongoose/api/solution'
-import {getUserIdByUsername} from "../mongoose/api/user";
 import {getTaskById, getTaskNameById, getTaskByIdWithoutTests} from "../mongoose/api/task";
 import {checkRight, getPriority} from "../mongoose/api/role"
 import runTests from '../utils/runTests'
 import formatTable from '../utils/formatTableForDB'
 import rights from '../const/rights'
+import groups from '../const/groups'
 
 const router = express.Router();
 
@@ -51,7 +51,7 @@ router.route('/api/tasks/:taskId/solutions')
     .post((req, res) => {
         const {body: {solution}, user: {username, role}, params: {taskId}} = req;
         (async () => {
-            let hasRight = await checkRight(role, "task", "sendSolution", 1);
+            let hasRight = await checkRight(role, groups.Task, rights.SendSolution, 1);
             if (!hasRight)
                 return res.status(403).end();
 
@@ -92,7 +92,7 @@ router.route('/api/solutions/:solutionId')
         (async () => {
             const foundedSolution = await getSolutionById(solutionId);
 
-            if (foundedSolution && checkRight(role, rights.canUpdateSolution, foundedSolution.priority)) {
+            if (foundedSolution && checkRight(role, groups.Solution, rights.Update, foundedSolution.priority)) {
                 await updateSolution(solutionId, solution);
                 return res.status(200).end();
             } else {
@@ -105,8 +105,7 @@ router.route('/api/solutions/:solutionId')
 
         (async () => {
             const foundedSolution = await getSolutionById(solutionId);
-
-            if (foundedSolution && checkRight(role, rights.canDeleteSolution, foundedSolution.priority)) {
+            if (foundedSolution && checkRight(role, groups.Solution, rights.Delete, foundedSolution.priority)) {
                 await deleteSolution(solutionId);
                 return res.status(200).end();
             } else {
@@ -120,8 +119,7 @@ router.route('/api/users/:username/solutions')
     .get((req, res) => {
         const {params: {username}} = req;
         (async () => {
-            const userId = await getUserIdByUsername(username)
-            const solutions = await getAllByAuthorId(userId)
+            const solutions = await getAllByUsername(username);
             return res.json({solutions})
         })()
     });

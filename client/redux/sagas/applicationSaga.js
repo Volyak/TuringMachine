@@ -15,7 +15,6 @@ function* watchInit() {
 function* initSaga() {
     try {
         const user = yield call(getInitialStateFromServer);
-        console.log(JSON.stringify(user));
         if(user) {
             yield put(actions.initSuccessAuthorized(user));
         } else{

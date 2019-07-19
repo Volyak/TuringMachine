@@ -26,7 +26,6 @@ function* signInSaga(action) {
     try {
         let { username, password } = action.payload;
         const user = yield call(signIn, username, password);
-        console.log(JSON.stringify(user));
         yield put(actions.signInSuccess(user));
     }
     catch (error) {

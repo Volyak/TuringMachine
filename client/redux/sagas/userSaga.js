@@ -1,15 +1,19 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects'
 import * as actions from '../actions/userActions'
-import { getAllUsers } from '../../services/userApi'
+import { getAllUsers, deleteUser } from '../../services/userApi'
 
 export default  function* authorizationSaga() {
     yield all([
-        watchGetUsers()
+        watchGetUsers(),
+        watchDeleteUser()
     ])
 }
 
 function* watchGetUsers() {
     yield takeLatest(actions.getUsers, getUsersSaga)
+}
+function* watchDeleteUser() {
+    yield takeLatest(actions.deleteUser, deleteUserSaga)
 }
 
 function* getUsersSaga() {
@@ -19,5 +23,18 @@ function* getUsersSaga() {
     }
     catch (error) {
         yield put(actions.getUsersFailure(error))
+    }
+}
+
+function* deleteUserSaga(action) {
+    try {
+        const {id} = action.payload;
+        yield call(deleteUser, id);
+
+        yield put(actions.getUsers());
+        yield put(actions.deleteUserSuccess());
+    }
+    catch (error) {
+        yield put(actions.deleteUserFailure(error))
     }
 }

@@ -18,7 +18,7 @@ export const getSolutionById = (id) => {
         credentials: 'include'
     })
         .then(response => {
-            if (response.status === 200){
+            if (response.status === 200) {
                 return response.json();
             } else {
                 throw response.status;
@@ -44,3 +44,16 @@ export const postSolution = (taskId, solution) => {
         })
 };
 
+export const deleteSolution = (id) => {
+    return fetch('/api/solutions/' + id, {
+        method: 'DELETE',
+        credentials: 'include'
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response;
+            } else {
+                throw response.status
+            }
+        })
+};

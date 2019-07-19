@@ -7,8 +7,10 @@ import {
     updateUser,
     deleteUser
 } from '../mongoose/api/user'
-import {checkRight, getPriority, getUserPriority} from "../mongoose/api/role"
+import {deleteAllByUsername} from "../mongoose/api/solution";
+import {checkRight, getUserPriority} from "../mongoose/api/role"
 import rights from '../const/rights'
+import groups from '../const/groups'
 
 const router = express.Router();
 
@@ -29,7 +31,7 @@ router.route('/api/users/:userId')
     (async () => {
         const foundedUser = await getUserById(userId);
         const foundedUserPriority = await getUserPriority(foundedUser.role);
-        if (foundedUser && checkRight(role, rights.canUpdateUser, foundedUserPriority)) {
+        if (foundedUser && checkRight(role, groups.User, rights.Update, foundedUserPriority)) {
             await updateUser(userId, user);
             return res.status(200).end();
         } else {
@@ -43,8 +45,9 @@ router.route('/api/users/:userId')
     (async () => {
         const foundedUser = await getUserById(userId);
         const foundedUserPriority = await getUserPriority(foundedUser.role);
-        if (foundedUser && checkRight(role, rights.canDeleteUser, foundedUserPriority)) {
-            await deleteUser(userId);
+        if (foundedUser && checkRight(role, groups.User, rights.Delete, foundedUserPriority)) {
+            await deleteAllByUsername(foundedUser.username);
+            //await deleteUser(userId);
             return res.status(200).end();
         } else {
             return res.status(403).end();

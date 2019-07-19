@@ -7,6 +7,7 @@ import {
     deleteTask,
     getAll
 } from '../mongoose/api/task'
+import {deleteAllByTaskId} from "../mongoose/api/solution"
 import {checkRight, getPriority} from "../mongoose/api/role"
 import rights from '../const/rights'
 import groups from '../const/groups'
@@ -39,7 +40,8 @@ router.route('/api/tasks/:taskId')
         (async () => {
             const foundedTask = await getTaskById(taskId);
             if(foundedTask && checkRight(role, groups.Task, rights.Delete, foundedTask.priority)) {
-                await deleteTask(taskId);
+                await deleteAllByTaskId(taskId);
+                //await deleteTask(taskId);
                 return res.status(200).end();
             } else {
                 return res.status(403).end();

@@ -6,10 +6,10 @@ import {
     getRoleById,
     addRole,
     updateRole,
-    deleteRole
+    deleteRole,
 } from '../mongoose/api/role'
 import rights from '../const/rights'
-import {getTaskById} from "../mongoose/api/task";
+import groups from "../const/groups";
 
 const router = express.Router();
 
@@ -23,8 +23,26 @@ router.route('/api/roles')
                 }
                 return res.json({roles});
             })
-    });
+    })
+    .post((req, res) => {
+        let {body: {newRole}, user: {role}} = req;
 
+        let maxRolePriority = 0;
+        for (let i = 0, l = newRole.groups.length; i < l; i++) {
+            let currentGroupRights = newRole.groups[i].rights;
+            for (let j = 0, k = currentGroupRights.length; j < k; j++) {
+                if (maxRolePriority < currentGroupRights[j].priority)
+                    maxRolePriority = currentGroupRights[j].priority;
+            }
+        }
+
+        let hasRight = checkRight(role, groups.Role, rights.Add, maxRolePriority);
+        if (!hasRight) return res.status(403).end();
+        return addRole(newRole)
+            .then(() => {
+                res.status(200).end();
+            });
+    });
 router.route('/api/roles/:roleId')
     .all(authenticationCheckMiddleware)
     .get((req, res) => {
@@ -36,11 +54,28 @@ router.route('/api/roles/:roleId')
         })()
     })
     .post((req, res) => {
+        const {body: {newRole}, params: {roleId}, user: {role}} = req;
+
         (async () => {
+            const foundedRole = await getRoleById(roleId);
+            if (foundedRole && checkRight(role, groups.Role, rights.Update, foundedRole.priority)) {
+                await updateRole(roleId, newRole);
+                return res.status(200).end();
+            } else {
+                return res.status(403).end();
+            }
         })()
     })
     .delete((req, res) => {
+        const {params: {roleId}, user: {role}} = req;
         (async () => {
+            const foundedRole = await getRoleById(roleId);
+            if (foundedRole && checkRight(role, groups.Role, rights.Delete, foundedRole.priority)) {
+                await deleteRole(roleId);
+                return res.status(200).end();
+            } else {
+                return res.status(403).end();
+            }
         })()
     });
 

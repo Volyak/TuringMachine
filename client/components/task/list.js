@@ -33,7 +33,6 @@ class TaskList extends Component {
         const {tasks, canAddTask} = this.props;
         const List = getList(TaskListItem, tasks);
         const {addingFormIsOpen} = this.state;
-        console.log(canAddTask)
         return (
             <div className={'task__list'}>
                 {canAddTask &&
