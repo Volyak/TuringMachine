@@ -2,34 +2,40 @@ import React, {Component} from 'react'
 import {getRole} from '../../services/roleApi'
 
 class Role extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
-        this.state = {
-            name: '',
-            rights: [],
+        this.state={
+            name: "",
+            groups: [],
         }
     }
 
-    componentDidMount() {
+    componentDidMount(){
         getRole(this.props.match.params.roleId)
-            .then(role => {
+            .then(role =>{
                 this.setState({
                     name: role.name,
-                    rights: role.rights
+                    groups: role.groups
                 })
             });
     }
 
     render() {
-        const {name, rights} = this.state;
+        const {name, groups} = this.state;
 
         return (
             <div>
-                <h3> {name} </h3>
+                <h2>{name}</h2>
                 {
-                    rights.map((right) => {
-                        return <h3 key={right.rightName}>{right.rightName + " = " + right.priority}</h3>
-                    })}
+                    groups.map(group => (<div key={group.name}>
+                        <h3>{group.name}</h3>
+                        {
+                            group.rights.map(right => (<div key={right.name}>
+                                {right.name + ' ' + right.priority}
+                            </div>))
+                        }
+                    </div>))
+                }
             </div>
         )
     }

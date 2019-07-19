@@ -8,6 +8,7 @@ import UserList from '../user/list'
 import User from '../user/user'
 import RoleList from '../role/list'
 import Role from '../role/role'
+import ChangeRole from '../role/changeRole'
 import PrivateRoute from '../common/PrivateRoute'
 
 import './css/appview.css';
@@ -24,6 +25,7 @@ const AppView = () => {
                 <Route exact path='/users/:userId' component={User}/>
                 <Route exact path='/roles' component={RoleList}/>
                 <Route exact path='/roles/:roleId' component={Role}/>
+                <Route exact path='/roles/edit/:roleId' component={ChangeRole}/>
             </Switch>
         </div>
     )

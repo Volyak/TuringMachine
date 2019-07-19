@@ -43,6 +43,7 @@ router.route('/api/roles')
                 res.status(200).end();
             });
     });
+
 router.route('/api/roles/:roleId')
     .all(authenticationCheckMiddleware)
     .get((req, res) => {

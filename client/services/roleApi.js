@@ -26,3 +26,22 @@ export const getRole = (id) => {
             }
         })
 };
+
+export const updateRole = (id, newRole) => {
+    return fetch('/api/roles/' + id, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ newRole })
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+                    .then(res => res.role);
+            } else {
+                throw response.status;
+            }
+        })
+};
