@@ -31,7 +31,8 @@ router.route('/api/solutions')
                     taskName: task.name,
                     taskId: solutions[i].taskId,
                     username: solutions[i].username,
-                    isDone: solutions[i].isDone
+                    isDone: solutions[i].isDone,
+                    priority: solutions[i].priority
                 })
             }
             return res.json({solutions: data});
