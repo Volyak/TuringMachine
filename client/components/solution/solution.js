@@ -25,7 +25,7 @@ class Solution extends Component {
                     taskName: data.task.name,
                     alphabet: data.task.alphabet,
                     description: data.task.description,
-                    username: data.solution.username,
+                    username: data.username,
                     table: transposeTable(data.solution.table),
                     isDone: data.solution.isDone
                 })

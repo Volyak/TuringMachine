@@ -1,9 +1,8 @@
 import express from 'express'
 import {updateUser, User} from '../mongoose/api/user'
-import {getRightsByRoleName} from '../mongoose/api/role'
+import {getRoleById} from '../mongoose/api/role'
 import passport from 'passport'
 import {serverConfig} from '../config/serverConfig'
-import rights from "../const/rights";
 
 const router = express.Router();
 
@@ -11,9 +10,9 @@ router.route('/signin')
     .get((req, res) => {
         const {user} = req;
         if (req.isAuthenticated()) {
-            return getRightsByRoleName(user.role)
-                .then(rights => {
-                    return res.json({_id: user._id, username: user.username, role: user.role, groups: rights.groups});
+            return getRoleById(user.roleId)
+                .then(role => {
+                    return res.json({_id: user._id, username: user.username, role: role.name, groups: role.groups});
                 })
         }
         return res.json()
@@ -28,10 +27,10 @@ router.route('/signin')
                 return res.status(500).end()
             }
             if (user) {
-                return getRightsByRoleName(user.role)
-                    .then(rights => {
+                return getRoleById(user.roleId)
+                    .then(role => {
                         passport.authenticate('local')(req, res, () => {
-                            return res.json({_id: user._id, username: user.username, role: user.role, groups: rights.groups});
+                            return res.json({_id: user._id, username: user.username, role: role.name, groups: role.groups});
                         })
                     })
             } else {
@@ -43,7 +42,7 @@ router.route('/signin')
 router.route('/signup')
     .post((req, res) => {
         const {username, password} = req.body;
-        const role = 'student';
+        const role = "5d321275b724f6be1085fb42";
 
         return User.findOne({username}, (error, user) => {
             if (error) {

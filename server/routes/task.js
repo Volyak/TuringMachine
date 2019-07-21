@@ -24,10 +24,10 @@ router.route('/api/tasks/:taskId')
         })()
     })
     .post((req, res) => {
-        const {body: {task}, params: {taskId}, user: {role}} = req;
+        const {body: {task}, params: {taskId}, user: {roleId}} = req;
         (async () => {
             const foundedTask = await getTaskById(taskId);
-            let hasRight = checkRight(role, groups.Task, rights.Update, foundedTask.priority);
+            let hasRight = checkRight(roleId, groups.Task, rights.Update, foundedTask.priority);
             if (foundedTask && hasRight) {
                 await updateTask(taskId, task);
                 return res.status(200).end();
@@ -37,10 +37,10 @@ router.route('/api/tasks/:taskId')
         })()
     })
     .delete((req, res) => {
-        const {params: {taskId}, user:{role}} = req;
+        const {params: {taskId}, user:{roleId}} = req;
         (async () => {
             const foundedTask = await getTaskById(taskId);
-            let hasRight = checkRight(role, groups.Task, rights.Delete, foundedTask.priority);
+            let hasRight = checkRight(roleId, groups.Task, rights.Delete, foundedTask.priority);
             if(foundedTask && hasRight) {
                 await deleteAllByTaskId(taskId);
                 await deleteTask(taskId);
@@ -63,11 +63,12 @@ router.route('/api/tasks')
             })
     })
     .post((req, res) => {
-        let {body: {task}, user: {role}} = req;
+        let {body: {task}, user: {roleId, _id}} = req;
 
-        let hasRight = checkRight(role, groups.Task, rights.Add, 1);
+        let hasRight = checkRight(roleId, groups.Task, rights.Add, 1);
         if (!hasRight) return res.status(403).end();
-        task.priority = getPriority(role, groups.Task, rights.Add);
+        task.priority = getPriority(roleId, groups.Task, rights.Add);
+        task.authorId = _id;
         return addTask(task)
             .then(() => {
                 res.status(200).end();

@@ -12,8 +12,9 @@ export const UserSchema = new Schema({
     password: {
         type: String
     },
-    role: {
-        type: String
+    roleId: {
+        type: ObjectId,
+        required: true
     }
 });
 
@@ -35,6 +36,10 @@ export const TaskSchema = new Schema({
         type: String,
         required: true
     },
+    authorId: {
+        type: ObjectId,
+        required: true
+    },
     tests: [
         {
             input: {
@@ -54,12 +59,12 @@ export const SolutionSchema = new Schema({
         type: ObjectId,
         required: true
     },
-    username: {
-        type: String,
-        required: true
-    },
     priority: {
         type: Number,
+        required: true
+    },
+    authorId: {
+        type: ObjectId,
         required: true
     },
     table: [

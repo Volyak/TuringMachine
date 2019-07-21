@@ -8,6 +8,7 @@ const RoleListItem = (props) => {
     return (
         <div className={'item'}>
             <Link to={'/roles/' + id}>{name}</Link>
+            <Link to={'/roles/edit/' + id}>edit</Link>
         </div>
     )
 }

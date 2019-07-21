@@ -18,6 +18,7 @@ function* watchDeleteSolution() {
 function* getSolutionsSaga() {
     try {
         const solutions = yield call(getAllSolutions);
+        console.log(JSON.stringify(solutions));
         yield put(actions.getSolutionsSuccess(solutions));
     }
     catch (error) {

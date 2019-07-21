@@ -20,7 +20,9 @@ export const getRole = (id) => {
         .then(response => {
             if (response.status === 200) {
                 return response.json()
-                    .then(res => res.role);
+                    .then(res => {
+                        console.log(JSON.stringify(res))
+                        return res.role});
             } else {
                 throw response.status;
             }
@@ -28,6 +30,7 @@ export const getRole = (id) => {
 };
 
 export const updateRole = (id, newRole) => {
+    console.log(newRole);
     return fetch('/api/roles/' + id, {
         method: 'POST',
         credentials: 'include',

@@ -2,11 +2,12 @@ import express from 'express'
 import authenticationCheckMiddleware from "../middlewares/authenticationCheck";
 import {
     checkRight,
+    getUserPriority,
     getAll,
     getRoleById,
     addRole,
     updateRole,
-    deleteRole,
+    deleteRole
 } from '../mongoose/api/role'
 import rights from '../const/rights'
 import groups from "../const/groups";
@@ -25,7 +26,7 @@ router.route('/api/roles')
             })
     })
     .post((req, res) => {
-        let {body: {newRole}, user: {role}} = req;
+        let {body: {newRole}, user: {roleId}} = req;
 
         let maxRolePriority = 0;
         for (let i = 0, l = newRole.groups.length; i < l; i++) {
@@ -36,7 +37,7 @@ router.route('/api/roles')
             }
         }
 
-        let hasRight = checkRight(role, groups.Role, rights.Add, maxRolePriority);
+        let hasRight = checkRight(roleId, groups.Role, rights.Add, maxRolePriority);
         if (!hasRight) return res.status(403).end();
         return addRole(newRole)
             .then(() => {
@@ -55,24 +56,27 @@ router.route('/api/roles/:roleId')
         })()
     })
     .post((req, res) => {
-        const {body: {newRole}, params: {roleId}, user: {role}} = req;
-
+        const {body: {newRole}, params: {roleId}, user: {roleId: userRoleId}} = req;
+    console.log(req);
         (async () => {
             const foundedRole = await getRoleById(roleId);
-            let hasRight = await checkRight(role, groups.Role, rights.Update, foundedRole.priority);
+            console.log(foundedRole);
+            const foundedRolePriority = await getUserPriority(roleId);
+            console.log(foundedRolePriority);
+            let hasRight = await checkRight(userRoleId, groups.Role, rights.Update, foundedRolePriority);
             if (foundedRole && hasRight) {
                 await updateRole(roleId, newRole);
-                return res.status(200).end();
+                return res.status(200);
             } else {
                 return res.status(403).end();
             }
         })()
     })
     .delete((req, res) => {
-        const {params: {roleId}, user: {role}} = req;
+        const {params: {roleId}, user: {roleId: userRoleId}} = req;
         (async () => {
             const foundedRole = await getRoleById(roleId);
-            let hasRight = await checkRight(role, groups.Role, rights.Delete, foundedRole.priority);
+            let hasRight = await checkRight(userRoleId, groups.Role, rights.Delete, foundedRole.priority);
             if (foundedRole && hasRight) {
                 await deleteRole(roleId);
                 return res.status(200).end();

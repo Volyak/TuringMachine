@@ -1,9 +1,23 @@
 import tm from './turingMachine'
+import pm from './postMachine'
 
-export default function runTests(solution, tests) {
+export default function runTests(machineType, solution, tests) {
+
+    let machine;
+    switch (machineType) {
+        case "Turing Machine":
+            machine = tm;
+            break;
+        case "Post Machine":
+            machine = pm;
+            break;
+        default:
+            return 0;
+    }
+
     for (let i =0, l = tests.length; i < l; i++){
         try {
-            if (!tm(solution, tests[i])) {
+            if (!machine(solution, tests[i])) {
                 return i + 1;
             }
         }

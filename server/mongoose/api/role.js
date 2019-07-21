@@ -5,8 +5,8 @@ import {Task} from "./task";
 
 export const Role = mongoose.model('Role', RoleSchema, 'roles');
 
-export const checkRight = async (role, group, right, priority) => {
-    const groups = (await Role.findOne({name: role}).select("groups")).groups;
+export const checkRight = async (roleId, group, right, priority) => {
+    const groups = (await Role.findOne({_id: roleId}).select("groups")).groups;
     const foundedGroup = groups.find((g) => g.name === group);
     const foundedRight = foundedGroup.rights.find((r) => r.name === right);
     return foundedRight.priority >= priority;
@@ -35,19 +35,19 @@ export const updateRole = async (roleId, roleNewState) => {
 export const deleteRole = async (roleId) => {
     return Role.findByIdAndRemove(roleId).exec();
 };
-export const getRightsByRoleName = (roleName) => {
-    return Role.findOne({name: roleName}).select("groups");
+export const getRightsByRoleId = (roleId) => {
+    return Role.findOne({_id: roleId}).select("groups");
 };
 
-export const getPriority = async (role, group, right) => {
-    const groups = (await Role.findOne({name: role}).select("groups")).groups;
+export const getPriority = async (roleId, group, right) => {
+    const groups = (await Role.findOne({_id: roleId}).select("groups")).groups;
     const foundedGroup = groups.filter((g) => g.name === group)[0];
     const foundedRight = foundedGroup.rights.filter((r) => r.name === right)[0];
     return foundedRight.priority;
 };
 
-export const getUserPriority = async (role) => { //change
-    const groups = (await Role.findOne({name: role}).select("groups")).groups;
+export const getUserPriority = async (roleId) => {
+    const groups = (await Role.findOne({_id: roleId}).select("groups")).groups;
     let maxPriority = 0;
     for (let l = groups.length, i = 0; i < l; i++) {
         let rights = groups[i].rights;

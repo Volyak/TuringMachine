@@ -28,7 +28,6 @@ class Task extends Component {
 
     render() {
         const {id, name, description, alphabet} = this.state;
-
         return (
             <div className={'task'}>
                 <h3> {name} </h3>

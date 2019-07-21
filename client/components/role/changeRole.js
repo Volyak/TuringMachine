@@ -4,6 +4,7 @@ import {getRole, updateRole} from '../../services/roleApi'
 class ChangeRole extends Component {
     constructor(props) {
         super(props);
+        this.id = props.match.params.roleId;
         this.state = {
             name: "",
             groups: [],
@@ -11,7 +12,7 @@ class ChangeRole extends Component {
     }
 
     componentDidMount() {
-        getRole(this.props.match.params.roleId)
+        getRole(this.id)
             .then(role => {
                 this.setState({
                     name: role.name,
@@ -39,7 +40,7 @@ class ChangeRole extends Component {
 
     send = () => {
         const {name, groups} = this.state;
-        updateRole(this.props.match.params.roleId, {name, groups});
+        updateRole(this.id, {name, groups});
     };
 
     render() {
@@ -54,7 +55,8 @@ class ChangeRole extends Component {
                         {
                             group.rights.map((right, j) => <div key={j}>
                                 <div>{right.name + ' ' + right.priority}</div>
-                                <input id={i + '_' + j} onChange={this.handleChangedPriority} type="number" min="0" max="10" step="1"
+                                <input id={i + '_' + j} onChange={this.handleChangedPriority} type="number" min="0"
+                                       max="10" step="1"
                                        value={right.priority}/>
                             </div>)
                         }

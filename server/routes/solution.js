@@ -3,7 +3,7 @@ import authenticationCheckMiddleware from "../middlewares/authenticationCheck";
 import {
     getAll,
     getSolutionById,
-    getAllByUsername,
+    getAllByAuthorId,
     getAllByTaskId,
     addSolution,
     updateSolution,
@@ -11,6 +11,7 @@ import {
 } from '../mongoose/api/solution'
 import {getTaskById, getTaskNameById, getTaskByIdWithoutTests} from "../mongoose/api/task";
 import {checkRight, getPriority} from "../mongoose/api/role"
+import {getUserIdByUsername, getUsernameById} from "../mongoose/api/user"
 import runTests from '../utils/runTests'
 import formatTable from '../utils/formatTableForDB'
 import rights from '../const/rights'
@@ -26,11 +27,12 @@ router.route('/api/solutions')
             let data = [];
             for (let i = 0, l = solutions.length; i < l; i++) {
                 const task = await getTaskNameById(solutions[i].taskId);
+                const username = await getUsernameById(solutions[i].authorId);
                 data.push({
                     _id: solutions[i]._id,
                     taskName: task.name,
                     taskId: solutions[i].taskId,
-                    username: solutions[i].username,
+                    username,
                     isDone: solutions[i].isDone,
                     priority: solutions[i].priority
                 })
@@ -50,24 +52,23 @@ router.route('/api/tasks/:taskId/solutions')
         })
     })
     .post((req, res) => {
-        const {body: {solution}, user: {username, role}, params: {taskId}} = req;
+        const {body: {solution}, user: {_id, roleId}, params: {taskId}} = req;
         (async () => {
-            let hasRight = await checkRight(role, groups.Task, rights.SendSolution, 1);
+            let hasRight = await checkRight(roleId, groups.Task, rights.SendSolution, 1);
             if (!hasRight)
                 return res.status(403).end();
 
-
             const task = await getTaskById(taskId);
-            const numberOfFailedTest = runTests(solution, task.tests);
+            const numberOfFailedTest = runTests(task.type, solution, task.tests);
             const table = formatTable(solution, task.alphabet);
-            const priority = await getPriority(role, "task", "sendSolution");
+            const priority = await getPriority(roleId, groups.Task, rights.SendSolution);
             const addedSolution = await addSolution({
                 table,
                 taskId,
-                username,
                 priority,
                 isDone: numberOfFailedTest === 0,
-                numberOfFailedTest
+                numberOfFailedTest,
+                authorId: _id
             });
 
             if (addedSolution.isDone) {
@@ -84,15 +85,16 @@ router.route('/api/solutions/:solutionId')
         const {params: {solutionId}} = req;
         (async () => {
             const solution = await getSolutionById(solutionId);
+            const username = await getUsernameById(solution.authorId);
             const task = await getTaskByIdWithoutTests(solution.taskId);
-            return res.json({solution, task});
+            return res.json({solution, task, username});
         })()
     })
     .post((req, res) => {
-        const {body: {solution}, params: {solutionId}, user: {role}} = req;
+        const {body: {solution}, params: {solutionId}, user: {roleId}} = req;
         (async () => {
             const foundedSolution = await getSolutionById(solutionId);
-            let hasRight = await checkRight(role, groups.Solution, rights.Update, foundedSolution.priority);
+            let hasRight = await checkRight(roleId, groups.Solution, rights.Update, foundedSolution.priority);
             if (foundedSolution && hasRight) {
                 await updateSolution(solutionId, solution);
                 return res.status(200).end();
@@ -102,11 +104,11 @@ router.route('/api/solutions/:solutionId')
         })()
     })
     .delete((req, res) => {
-        const {params: {solutionId}, user: {role}} = req;
+        const {params: {solutionId}, user: {roleId}} = req;
 
         (async () => {
             const foundedSolution = await getSolutionById(solutionId);
-            let hasRight = await checkRight(role, groups.Solution, rights.Delete, foundedSolution.priority);
+            let hasRight = await checkRight(roleId, groups.Solution, rights.Delete, foundedSolution.priority);
             if (foundedSolution && hasRight) {
                 await deleteSolution(solutionId);
                 return res.status(200).end();
@@ -121,7 +123,8 @@ router.route('/api/users/:username/solutions')
     .get((req, res) => {
         const {params: {username}} = req;
         (async () => {
-            const solutions = await getAllByUsername(username);
+            const id = await getUserIdByUsername(username);
+            const solutions = await getAllByAuthorId(id);
             return res.json({solutions})
         })()
     });
