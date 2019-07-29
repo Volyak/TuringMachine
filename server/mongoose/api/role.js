@@ -18,6 +18,10 @@ export const getRoleById = async (roleId) => {
     return Role.findOne({_id: roleId}).exec();
 };
 
+export const getRoleByName = async (name) => {
+    return Role.findOne({name}).exec();
+};
+
 export const addRole = async (newRole) => {
     return Role.create(newRole);
 };

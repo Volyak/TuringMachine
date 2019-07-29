@@ -6,6 +6,7 @@ import SolutionList from '../solution/list'
 import Solution from '../solution/solution'
 import UserList from '../user/list'
 import User from '../user/user'
+import ChangeUser from '../user/changeUser'
 import RoleList from '../role/list'
 import Role from '../role/role'
 import ChangeRole from '../role/changeRole'
@@ -22,6 +23,7 @@ const AppView = (props) => {
                 <Route exact path='/solutions' component={SolutionList}/>
                 <Route exact path='/tasks/:taskId/solutions/:solutionId' component={Solution}/>
                 <Route exact path='/users' component={UserList}/>
+                <Route exact path='/users/edit/:userId' component={ChangeUser}/>
                 <Route exact path='/users/:userId' component={User}/>
                 <Route exact path='/roles' component={RoleList}/>
                 <Route exact path='/roles/add' component={ChangeRole} />

@@ -11,17 +11,22 @@ class UserListItem extends Component {
     constructor(props) {
         super(props);
     }
-    deleteUser= () => {
+
+    deleteUser = () => {
         const {id, deleteUser} = this.props;
         deleteUser({id});
     };
+
     render() {
-        const {id, username, role, canDeleteUser} = this.props;
+        const {id, username, role, canDeleteUser, canUpdateUser} = this.props;
 
         return (
             <div className={'item'}>
                 <Link to={'/users/' + id}>{username + "   " + role}</Link>
-                { canDeleteUser &&
+                {canUpdateUser &&
+                <Link to={'/users/edit/' + id}>edit</Link>
+                }
+                {canDeleteUser &&
                 <button onClick={this.deleteUser}>X</button>
                 }
             </div>
@@ -34,9 +39,11 @@ UserListItem.propTypes = {
     username: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
     canDeleteUser: PropTypes.bool.isRequired,
-    deleteUser: PropTypes.func.isRequired
+    deleteUser: PropTypes.func.isRequired,
+    canUpdateUser: PropTypes.bool.isRequired,
 };
 
-export default  connect((state) => ({
-    canDeleteUser: rightChecker(state.application.groups, groups.User, rights.Delete, 1)
-}),actions)(UserListItem);
+export default connect((state) => ({
+    canDeleteUser: rightChecker(state.application.groups, groups.User, rights.Delete, 1),
+    canUpdateUser: rightChecker(state.application.groups, groups.User, rights.Update, 1),
+}), actions)(UserListItem);

@@ -6,7 +6,7 @@ import {
     updateUser,
 } from '../mongoose/api/user'
 import {deleteAllByAuthorId} from "../mongoose/api/solution";
-import {checkRight, getRoleById, getUserPriority} from "../mongoose/api/role"
+import {checkRight, getRoleById, getRoleByName, getUserPriority} from "../mongoose/api/role"
 import rights from '../const/rights'
 import groups from '../const/groups'
 
@@ -31,9 +31,13 @@ router.route('/api/users/:userId')
 
         (async () => {
             const foundedUser = await getUserById(userId);
-            const foundedUserPriority = await getUserPriority(foundedUser.role);
+            const foundedUserPriority = await getUserPriority(foundedUser.roleId);
             let hasRight = await checkRight(roleId, groups.User, rights.Update, foundedUserPriority);
             if (foundedUser && hasRight) {
+                if(user.role){
+                    user.roleId = (await getRoleByName(user.role))._id;
+                    user.role = undefined;
+                }
                 await updateUser(userId, user);
                 return res.status(200).end();
             } else {

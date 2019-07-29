@@ -63,10 +63,6 @@ class ChangeRole extends Component {
 
     render() {
         const {name, groups} = this.state;
-        console.log('name');
-        console.log(name);
-        console.log('groups');
-        console.log(groups);
         return (
             <div>
                 <input type="text" onChange={this.handleChangedName} placeholder="name" value={name}/>
