@@ -27,7 +27,7 @@ router.route('/api/tasks/:taskId')
         const {body: {task}, params: {taskId}, user: {roleId}} = req;
         (async () => {
             const foundedTask = await getTaskById(taskId);
-            let hasRight = checkRight(roleId, groups.Task, rights.Update, foundedTask.priority);
+            let hasRight = await checkRight(roleId, groups.Task, rights.Update, foundedTask.priority);
             if (foundedTask && hasRight) {
                 await updateTask(taskId, task);
                 return res.status(200).end();
@@ -37,11 +37,11 @@ router.route('/api/tasks/:taskId')
         })()
     })
     .delete((req, res) => {
-        const {params: {taskId}, user:{roleId}} = req;
+        const {params: {taskId}, user: {roleId}} = req;
         (async () => {
             const foundedTask = await getTaskById(taskId);
-            let hasRight = checkRight(roleId, groups.Task, rights.Delete, foundedTask.priority);
-            if(foundedTask && hasRight) {
+            let hasRight = await checkRight(roleId, groups.Task, rights.Delete, foundedTask.priority);
+            if (foundedTask && hasRight) {
                 await deleteAllByTaskId(taskId);
                 await deleteTask(taskId);
                 return res.status(200).end();
@@ -60,19 +60,26 @@ router.route('/api/tasks')
                     return res.status(500).end();
                 }
                 return res.json({tasks});
-            })
+            }).catch(function () {
+                console.log("Promise Rejected");
+            });
     })
     .post((req, res) => {
         let {body: {task}, user: {roleId, _id}} = req;
-
-        let hasRight = checkRight(roleId, groups.Task, rights.Add, 1);
-        if (!hasRight) return res.status(403).end();
-        task.priority = getPriority(roleId, groups.Task, rights.Add);
-        task.authorId = _id;
-        return addTask(task)
-            .then(() => {
-                res.status(200).end();
-            });
+        (async () => {
+            console.log(1);
+            let hasRight = await checkRight(roleId, groups.Task, rights.Add, 1);
+            console.log(2);
+            if (!hasRight) return res.status(403).end();
+            console.log(3);
+            task.priority = await getPriority(roleId, groups.Task, rights.Add);
+            task.authorId = _id;
+            console.log(4);
+            return addTask(task)
+                .then(() => {
+                    res.status(200).end();
+                });
+        })()
     });
 
 export default router;

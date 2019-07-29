@@ -2,7 +2,7 @@ export default function playTest(solution, test) {
     const {input, output} = test;
     const {commands, lines} = solution;
 
-    let programmOutput = "" + input;
+    let programOutput = "" + input;
     let index = 0;
     let currentLine = 0;
     let step = 0;
@@ -13,16 +13,16 @@ export default function playTest(solution, test) {
 
         switch (command) {
             case "V":
-                if (programmOutput[index] === "V")
+                if (programOutput[index] === "V")
                     error = true;
                 else
-                    addMark(programmOutput, index);
+                    addMark(programOutput, index);
                 break;
             case "X":
-                if (programmOutput[index] === " ")
+                if (programOutput[index] === " ")
                     error = true;
                 else
-                    deleteMark(programmOutput, index);
+                    deleteMark(programOutput, index);
                 break;
             case ">":
                 index++;
@@ -31,7 +31,7 @@ export default function playTest(solution, test) {
                 index--;
                 break;
             case "?":
-                currentLine = programmOutput[index] === " " ? getFirstNextLine(lines[currentLine]) :
+                currentLine = programOutput[index] === " " ? getFirstNextLine(lines[currentLine]) :
                     getSecondNextLine(lines[currentLine]);
                 currentLine--;
                 break;
@@ -47,7 +47,7 @@ export default function playTest(solution, test) {
         if(stop)
             break;
     }
-    return output === programmOutput;
+    return output === programOutput;
 }
 
 function addMark(input, index) {

@@ -42,7 +42,7 @@ router.route('/signin')
 router.route('/signup')
     .post((req, res) => {
         const {username, password} = req.body;
-        const role = "5d321275b724f6be1085fb42";
+        const role = "5d345681b724f6be10861631";
 
         return User.findOne({username}, (error, user) => {
             if (error) {
@@ -59,7 +59,7 @@ router.route('/signup')
                             return res.status(500).end()
                         }
                         if (createdUser) {
-                            updateUser(createdUser._id, {role})
+                            updateUser(createdUser._id, {roleId})
                         }
                     });
                     passport.authenticate('local')(req, res, () => {

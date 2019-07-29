@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/actions/userActions'
+import rightChecker from "../../utilities/rightChecker";
+import groups from "../../const/groups";
+import rights from "../../const/rights";
 
 class UserListItem extends Component {
     constructor(props) {
@@ -13,12 +16,14 @@ class UserListItem extends Component {
         deleteUser({id});
     };
     render() {
-        const {id, username, role} = this.props;
+        const {id, username, role, canDeleteUser} = this.props;
 
         return (
             <div className={'item'}>
                 <Link to={'/users/' + id}>{username + "   " + role}</Link>
+                { canDeleteUser &&
                 <button onClick={this.deleteUser}>X</button>
+                }
             </div>
         )
     }
@@ -28,7 +33,10 @@ UserListItem.propTypes = {
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
+    canDeleteUser: PropTypes.bool.isRequired,
     deleteUser: PropTypes.func.isRequired
 };
 
-export default  connect(null,actions)(UserListItem);
+export default  connect((state) => ({
+    canDeleteUser: rightChecker(state.application.groups, groups.User, rights.Delete, 1)
+}),actions)(UserListItem);

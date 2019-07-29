@@ -1,15 +1,20 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects'
 import * as actions from '../actions/roleActions'
-import { getAllRoles } from '../../services/roleApi'
+import { getAllRoles, deleteRole } from '../../services/roleApi'
 
 export default  function* authorizationSaga() {
     yield all([
-        watchGetRoles()
+        watchGetRoles(),
+        watchDeleteRole()
     ])
 }
 
 function* watchGetRoles() {
     yield takeLatest(actions.getRoles, getRolesSaga)
+}
+
+function* watchDeleteRole() {
+    yield takeLatest(actions.deleteRole, deleteRoleSaga)
 }
 
 function* getRolesSaga() {
@@ -19,5 +24,19 @@ function* getRolesSaga() {
     }
     catch (error) {
         yield put(actions.getRolesFailure(error))
+    }
+}
+
+function* deleteRoleSaga(action) {
+    try {
+        console.log("DS")
+        const {id} = action.payload;
+        yield call(deleteRole, id);
+
+        yield put(actions.getRoles());
+        yield put(actions.deleteRoleSuccess());
+    }
+    catch (error) {
+        yield put(actions.deleteRoleFailure(error))
     }
 }

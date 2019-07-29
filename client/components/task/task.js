@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {getTask} from '../../services/taskApi'
-import Table from '../table/table'
+import TuringTable from '../tables/turingTable'
+import PostTable from "../tables/postTable";
 
 import './css/task.css';
 
@@ -35,8 +36,9 @@ class Task extends Component {
                 <div> Алфавит: {alphabet} </div>
                 {
                     alphabet &&
-                    <Table taskId={id} alphabet={alphabet}/>
+                    <TuringTable taskId={id} alphabet={alphabet}/>
                 }
+                <PostTable/>
             </div>
         )
     }

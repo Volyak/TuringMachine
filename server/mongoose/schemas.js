@@ -13,20 +13,22 @@ export const UserSchema = new Schema({
         type: String
     },
     roleId: {
-        type: ObjectId,
-        required: true
+        type: String
     }
 });
 
 export const TaskSchema = new Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     priority: {
         type: Number,
         required: true
+    },
+    type: {
+        type: String,
+        required:true
     },
     description: {
         type: String,
@@ -37,7 +39,7 @@ export const TaskSchema = new Schema({
         required: true
     },
     authorId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     tests: [
@@ -64,10 +66,14 @@ export const SolutionSchema = new Schema({
         required: true
     },
     authorId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
-    table: [
+    table: {
+        type: Schema.Types.Mixed,
+        required: true
+    },
+        /*[
         [
             {
                 writeSymbol: String,
@@ -81,7 +87,7 @@ export const SolutionSchema = new Schema({
                 }
             }
         ]
-    ],
+    ],*/
     isDone: {
         type: Boolean,
         required: true

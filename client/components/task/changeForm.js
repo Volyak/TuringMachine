@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import connect from 'react-redux/es/connect/connect'
 import * as actions from '../../redux/actions/taskActions'
 import TestsEditPanel from './testsEditPanel';
+import taskTypes from '../../const/taskTypes'
 
 import './css/editTaskForm.css'
 
@@ -18,6 +19,7 @@ class TaskChangeForm extends Component {
             this.state = {
                 name: props.task.name,
                 description: props.task.description,
+                type: props.task.type,
                 alphabet: props.task.alphabet,
                 tests,
                 newInput: '',
@@ -28,6 +30,7 @@ class TaskChangeForm extends Component {
             this.state = {
                 name: '',
                 description: '',
+                type: taskTypes.Turing.value,
                 alphabet: '',
                 tests: [],
                 newInput: '',
@@ -40,6 +43,7 @@ class TaskChangeForm extends Component {
         const {id, updateTask, addTask, close} = this.props;
         const newTask = {
             name: this.state.name,
+            type: this.state.type,
             description: this.state.description,
             alphabet: this.state.alphabet,
             tests: this.state.tests
@@ -78,6 +82,11 @@ class TaskChangeForm extends Component {
         this.setState({description});
     };
 
+    handleChangedType = (event) => {
+        const type = event.target.value;
+        this.setState({type});
+    };
+
     handleChangedAlphabet = (event) => {
         const alphabet = event.target.value;
         this.setState({alphabet});
@@ -95,7 +104,7 @@ class TaskChangeForm extends Component {
     };
 
     render() {
-        const {name, description, alphabet, tests, newInput, newOutput} = this.state;
+        const {name, description, type, alphabet, tests, newInput, newOutput} = this.state;
 
         return (
             <div className={'form'}>
@@ -107,6 +116,10 @@ class TaskChangeForm extends Component {
                     className={'input'}
                     onChange={this.handleChangedName}
                 />
+                <label>Тип</label>
+                <select onChange={this.handleChangedType} value={type}>
+                    {Object.keys(taskTypes).map(t => <option key={taskTypes[t].value} value={taskTypes[t].value}>{taskTypes[t].text}</option>)}
+                </select>
                 <label htmlFor={'description'}>Описание</label>
                 <input
                     type='text'

@@ -9,6 +9,7 @@ import {
     updateRole,
     deleteRole
 } from '../mongoose/api/role'
+import {existUsersWithRole} from '../mongoose/api/user'
 import rights from '../const/rights'
 import groups from "../const/groups";
 
@@ -36,33 +37,39 @@ router.route('/api/roles')
                     maxRolePriority = currentGroupRights[j].priority;
             }
         }
+        (async () => {
+            let hasRight = await checkRight(roleId, groups.Role, rights.Add, maxRolePriority);
 
-        let hasRight = checkRight(roleId, groups.Role, rights.Add, maxRolePriority);
-        if (!hasRight) return res.status(403).end();
-        return addRole(newRole)
-            .then(() => {
-                res.status(200).end();
-            });
+            if (!hasRight) return res.status(403).end();
+            return addRole(newRole)
+                .then(() => {
+                    res.status(200).end();
+                });
+        })()
     });
 
 router.route('/api/roles/:roleId')
     .all(authenticationCheckMiddleware)
     .get((req, res) => {
-        const {params: {roleId}} = req;
+        const {params: {roleId}, user: {roleId: userRoleId}} = req;
 
         (async () => {
-            const role = await getRoleById(roleId);
-            return res.json({role})
+            const foundedRole = await getRoleById(roleId);
+            const foundedRolePriority = await getUserPriority(roleId);
+            let hasRight = await checkRight(userRoleId, groups.Role, rights.Update, foundedRolePriority);
+            if (foundedRole && hasRight) {
+                const role = await getRoleById(roleId);
+                return res.json({role})
+            }
+            return res;
         })()
     })
     .post((req, res) => {
         const {body: {newRole}, params: {roleId}, user: {roleId: userRoleId}} = req;
-    console.log(req);
+
         (async () => {
             const foundedRole = await getRoleById(roleId);
-            console.log(foundedRole);
             const foundedRolePriority = await getUserPriority(roleId);
-            console.log(foundedRolePriority);
             let hasRight = await checkRight(userRoleId, groups.Role, rights.Update, foundedRolePriority);
             if (foundedRole && hasRight) {
                 await updateRole(roleId, newRole);
@@ -76,8 +83,10 @@ router.route('/api/roles/:roleId')
         const {params: {roleId}, user: {roleId: userRoleId}} = req;
         (async () => {
             const foundedRole = await getRoleById(roleId);
-            let hasRight = await checkRight(userRoleId, groups.Role, rights.Delete, foundedRole.priority);
-            if (foundedRole && hasRight) {
+            const foundedRolePriority = await getUserPriority(roleId);
+            const hasRight = await checkRight(userRoleId, groups.Role, rights.Delete, foundedRolePriority);
+            const existUsers = await existUsersWithRole(roleId);
+            if (foundedRole && hasRight && !existUsers) {
                 await deleteRole(roleId);
                 return res.status(200).end();
             } else {

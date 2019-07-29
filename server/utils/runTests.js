@@ -2,13 +2,12 @@ import tm from './turingMachine'
 import pm from './postMachine'
 
 export default function runTests(machineType, solution, tests) {
-
     let machine;
     switch (machineType) {
-        case "Turing Machine":
+        case "Turing":
             machine = tm;
             break;
-        case "Post Machine":
+        case "Post":
             machine = pm;
             break;
         default:

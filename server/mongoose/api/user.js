@@ -18,9 +18,16 @@ export const getUsernameById = async (id) => {
 export const getRoleByUserId = async (userId) => {
     return User.findOne({_id: userId}).roleId;
 };
+
 export const getAll = async () => {
     return User.find({});
 };
+
+export const existUsersWithRole = async (roleId) => {
+    const users = await User.find({roleId});
+    return users.length > 0;
+};
+
 export const addUser = async (newUser) => {
     return User.create(newUser)
         .then(user => {

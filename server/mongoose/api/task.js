@@ -24,6 +24,7 @@ export const getAll = async () => {
 };
 
 export const addTask = async (newTask) => {
+    console.log(newTask);
     return Task.create(newTask);
 };
 

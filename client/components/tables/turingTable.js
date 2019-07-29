@@ -1,10 +1,10 @@
 import React,{Component} from 'react'
-import parseTable from '../../utilities/parseTable'
+import parseTable from '../../utilities/parseTuringTable'
 import { postSolution } from '../../services/solutionApi'
 
 import './css/table.css';
 
-class Table extends Component {
+class TuringTable extends Component {
     constructor(props) {
         super(props);
         this.taskId = props.taskId;
@@ -125,4 +125,4 @@ class Table extends Component {
     }
 }
 
-export default Table
+export default TuringTable

@@ -1,7 +1,5 @@
 import mongoose from 'mongoose'
 import {RoleSchema} from "../schemas"
-import {User} from "./user";
-import {Task} from "./task";
 
 export const Role = mongoose.model('Role', RoleSchema, 'roles');
 
@@ -9,7 +7,7 @@ export const checkRight = async (roleId, group, right, priority) => {
     const groups = (await Role.findOne({_id: roleId}).select("groups")).groups;
     const foundedGroup = groups.find((g) => g.name === group);
     const foundedRight = foundedGroup.rights.find((r) => r.name === right);
-    return foundedRight.priority >= priority;
+    return (foundedRight.priority > 0) && (foundedRight.priority >= priority);
 };
 
 export const getAll = async () => {

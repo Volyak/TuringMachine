@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
-import {getRole, updateRole} from '../../services/roleApi'
+import {getRole, updateRole, addRole} from '../../services/roleApi'
+import getDefaultRole from '../../utilities/getDefaultRole'
 
 class ChangeRole extends Component {
     constructor(props) {
         super(props);
+        this.isNew = !props.match.params.roleId;
         this.id = props.match.params.roleId;
         this.state = {
             name: "",
@@ -12,13 +14,24 @@ class ChangeRole extends Component {
     }
 
     componentDidMount() {
-        getRole(this.id)
-            .then(role => {
-                this.setState({
-                    name: role.name,
-                    groups: role.groups
-                })
-            });
+        if (!this.isNew) {
+            getRole(this.id)
+                .then(role => {
+                    this.setState({
+                        name: role.name,
+                        groups: role.groups
+                    })
+                });
+        }
+        else {
+            console.log('getDefaultRole')
+            const role = getDefaultRole();
+            console.log(role)
+            this.setState({
+                name: role.name,
+                groups: role.groups
+            })
+        }
     }
 
     handleChangedName = (event) => {
@@ -40,12 +53,20 @@ class ChangeRole extends Component {
 
     send = () => {
         const {name, groups} = this.state;
-        updateRole(this.id, {name, groups});
+        if (!this.isNew) {
+            updateRole(this.id, {name, groups});
+        }
+        else {
+            addRole({name, groups})
+        }
     };
 
     render() {
         const {name, groups} = this.state;
-
+        console.log('name');
+        console.log(name);
+        console.log('groups');
+        console.log(groups);
         return (
             <div>
                 <input type="text" onChange={this.handleChangedName} placeholder="name" value={name}/>

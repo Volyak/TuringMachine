@@ -4,6 +4,10 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/roleActions'
 import getList from '../common/list'
+import rightChecker from "../../utilities/rightChecker";
+import groups from "../../const/groups";
+import rights from "../../const/rights";
+import {Link} from "react-router-dom";
 
 class RoleList extends Component {
 
@@ -12,17 +16,26 @@ class RoleList extends Component {
     }
 
     render() {
-        const {roles} = this.props;
+        const {roles, canAddRole} = this.props;
         const List = getList(RoleListItem, roles);
-        return (<List/>)
+        return (
+            <div>
+                {canAddRole &&
+                    <Link to={'/roles/add/'}>Add Role</Link>
+                }
+                <List/>
+            </div>
+        )
     }
 }
 
 RoleList.propTypes = {
     roles: PropTypes.array.isRequired,
-    getRoles: PropTypes.func.isRequired
+    getRoles: PropTypes.func.isRequired,
+    canAddRole: PropTypes.bool.isRequired
 };
 
 export default connect(state => ({
-    roles: state.role.roles
+    roles: state.role.roles,
+    canAddRole: rightChecker(state.application.groups, groups.Role, rights.Add, 1)
 }), actions)(RoleList)

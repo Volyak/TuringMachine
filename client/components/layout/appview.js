@@ -13,17 +13,18 @@ import PrivateRoute from '../common/PrivateRoute'
 
 import './css/appview.css';
 
-const AppView = () => {
+const AppView = (props) => {
     return (
         <div className={'appview'}>
             <Switch>
-                <PrivateRoute exact path="/tasks" component={TaskList} />
+                <PrivateRoute exact path="/tasks" component={TaskList}/>
                 <Route exact path='/tasks/:taskId' component={Task}/>
                 <Route exact path='/solutions' component={SolutionList}/>
                 <Route exact path='/tasks/:taskId/solutions/:solutionId' component={Solution}/>
                 <Route exact path='/users' component={UserList}/>
                 <Route exact path='/users/:userId' component={User}/>
                 <Route exact path='/roles' component={RoleList}/>
+                <Route exact path='/roles/add' component={ChangeRole} />
                 <Route exact path='/roles/:roleId' component={Role}/>
                 <Route exact path='/roles/edit/:roleId' component={ChangeRole}/>
             </Switch>
