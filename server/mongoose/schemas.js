@@ -20,15 +20,16 @@ export const UserSchema = new Schema({
 export const TaskSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     priority: {
         type: Number,
         required: true
     },
-    type: {
+    taskType: {
         type: String,
-        required:true
+        required: true
     },
     description: {
         type: String,

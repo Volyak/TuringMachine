@@ -42,7 +42,7 @@ router.route('/signin')
 router.route('/signup')
     .post((req, res) => {
         const {username, password} = req.body;
-        const role = "5d345681b724f6be10861631";
+        const roleId = "5d345681b724f6be10861631";
 
         return User.findOne({username}, (error, user) => {
             if (error) {

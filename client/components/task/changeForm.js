@@ -19,14 +19,13 @@ class TaskChangeForm extends Component {
             this.state = {
                 name: props.task.name,
                 description: props.task.description,
-                type: props.task.type,
+                type: props.task.taskType,
                 alphabet: props.task.alphabet,
                 tests,
                 newInput: '',
                 newOutput: ''
             }
-        }
-        else {
+        } else {
             this.state = {
                 name: '',
                 description: '',
@@ -41,9 +40,10 @@ class TaskChangeForm extends Component {
 
     sendData = () => {
         const {id, updateTask, addTask, close} = this.props;
+
         const newTask = {
             name: this.state.name,
-            type: this.state.type,
+            taskType: this.state.type,
             description: this.state.description,
             alphabet: this.state.alphabet,
             tests: this.state.tests
@@ -118,7 +118,8 @@ class TaskChangeForm extends Component {
                 />
                 <label>Тип</label>
                 <select onChange={this.handleChangedType} value={type}>
-                    {Object.keys(taskTypes).map(t => <option key={taskTypes[t].value} value={taskTypes[t].value}>{taskTypes[t].text}</option>)}
+                    {Object.keys(taskTypes).map(t => <option key={taskTypes[t].value}
+                                                             value={taskTypes[t].value}>{taskTypes[t].text}</option>)}
                 </select>
                 <label htmlFor={'description'}>Описание</label>
                 <input
@@ -128,14 +129,18 @@ class TaskChangeForm extends Component {
                     className={'input'}
                     onChange={this.handleChangedDescription}
                 />
-                <label htmlFor={'alphabet'}>Алфавит</label>
-                <input
-                    type='text'
-                    id='alphabet'
-                    value={alphabet}
-                    className={'input'}
-                    onChange={this.handleChangedAlphabet}
-                />
+                {type === taskTypes.Turing.value &&
+                <div>
+                    <label htmlFor={'alphabet'}>Алфавит</label>
+                    <input
+                        type='text'
+                        id='alphabet'
+                        value={alphabet}
+                        className={'input'}
+                        onChange={this.handleChangedAlphabet}
+                    />
+                </div>
+                }
                 <TestsEditPanel tests={tests} delete={this.deleteTest} handleChanged={this.handleChangedTest}/>
                 <div className={'form__add-panel'}>
                     <input
