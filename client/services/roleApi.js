@@ -21,7 +21,6 @@ export const getRole = (id) => {
             if (response.status === 200) {
                 return response.json()
                     .then(res => {
-                        console.log(JSON.stringify(res))
                         return res.role});
             } else {
                 throw response.status;

@@ -13,7 +13,6 @@ export default function runTests(machineType, solution, tests) {
         default:
             return 0;
     }
-
     for (let i =0, l = tests.length; i < l; i++){
         try {
             if (!machine(solution, tests[i])) {

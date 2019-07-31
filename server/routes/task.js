@@ -67,14 +67,11 @@ router.route('/api/tasks')
     .post((req, res) => {
         let {body: {task}, user: {roleId, _id}} = req;
         (async () => {
-            console.log(1);
             let hasRight = await checkRight(roleId, groups.Task, rights.Add, 1);
-            console.log(2);
             if (!hasRight) return res.status(403).end();
-            console.log(3);
             task.priority = await getPriority(roleId, groups.Task, rights.Add);
             task.authorId = _id;
-            console.log(4);
+
             return addTask(task)
                 .then(() => {
                     res.status(200).end();

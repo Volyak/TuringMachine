@@ -36,8 +36,7 @@ export const TaskSchema = new Schema({
         required: true
     },
     alphabet: {
-        type: String,
-        required: true
+        type: String
     },
     authorId: {
         type: String,

@@ -23,12 +23,14 @@ class PostTask extends Component {
     }
 
     render() {
-        const {id, name, description, alphabet} = this.state;
+        const {id, name, description} = this.state;
         return (
             <div className={'task'}>
                 <h3> {name} </h3>
                 <div> {description} </div>
-                <PostTable taskId={id}/>
+                { id &&
+                    <PostTable taskId={id}/>
+                }
             </div>
         )
     }

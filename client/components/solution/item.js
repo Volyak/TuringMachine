@@ -19,7 +19,7 @@ class SolutionListItem extends Component {
 
     render() {
         const {id, taskId, taskName, username, isDone, canDeleteSolution} = this.props;
-        console.log(canDeleteSolution);
+
         return (
             <div className={'item'}>
                 <Link to={'/tasks/' + taskId + '/solutions/' + id}>{taskName + ': ' + username}</Link>

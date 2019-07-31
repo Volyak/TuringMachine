@@ -29,7 +29,6 @@ function* getRolesSaga() {
 
 function* deleteRoleSaga(action) {
     try {
-        console.log("DS")
         const {id} = action.payload;
         yield call(deleteRole, id);
 

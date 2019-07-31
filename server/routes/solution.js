@@ -57,9 +57,8 @@ router.route('/api/tasks/:taskId/solutions')
             let hasRight = await checkRight(roleId, groups.Solution, rights.Add, 1);
             if (!hasRight)
                 return res.status(403).end();
-
             const task = await getTaskById(taskId);
-            const numberOfFailedTest = runTests(task.type, solution, task.tests);
+            const numberOfFailedTest = runTests(task.taskType, solution, task.tests);
             const table = formatTable(solution, task.alphabet);
             const priority = await getPriority(roleId, groups.Solution, rights.Add);
             const addedSolution = await addSolution({
