@@ -59,8 +59,8 @@ router.route('/api/tasks/:taskId/solutions')
                 return res.status(403).end();
             const task = await getTaskById(taskId);
             const numberOfFailedTest = runTests(task.taskType, solution, task.tests);
-            const table = formatTable(solution, task.alphabet);
             const priority = await getPriority(roleId, groups.Solution, rights.Add);
+            const table = formatTable(solution, task);
             const addedSolution = await addSolution({
                 table,
                 taskId,

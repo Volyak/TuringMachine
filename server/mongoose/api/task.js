@@ -8,7 +8,7 @@ export const getTaskById = async (taskId) => {
 };
 
 export const getTaskByIdWithoutTests = async (taskId) => {
-    return Task.findOne({_id: taskId}).select("name description alphabet");
+    return Task.findOne({_id: taskId}).select("name description alphabet taskType");
 };
 
 export const getAllTasksWithoutTests = async () => {

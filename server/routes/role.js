@@ -61,7 +61,7 @@ router.route('/api/roles/:roleId')
                 const role = await getRoleById(roleId);
                 return res.json({role})
             }
-            return res;
+            return res.status(403).end();
         })()
     })
     .post((req, res) => {

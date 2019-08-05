@@ -7,6 +7,7 @@ import ChangeFormController from "./changeFormController";
 import groups from '../../const/groups'
 import rights from '../../const/rights'
 import rightChecker from '../../utilities/rightChecker'
+import taskTypes from "../../const/taskTypes";
 
 import './css/item.css'
 
@@ -30,12 +31,15 @@ class TaskListItem extends Component {
     };
 
     render() {
-        const {id, name, canUpdateTask, canDeleteTask} = this.props;
+        const {id, name, taskType, canUpdateTask, canDeleteTask} = this.props;
         const {editFormIsOpen} = this.state;
 
         return (
             <div className={'item'}>
                 <Link to={'/tasks/' + id}>{name}</Link>
+                <div>
+                    {taskTypes[taskType].text}
+                </div>
                 <div className={'item__buttons'}>
                     {canUpdateTask &&
                     <button onClick={this.openEditForm}>edit</button>

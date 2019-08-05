@@ -19,16 +19,16 @@ const AppView = (props) => {
         <div className={'appview'}>
             <Switch>
                 <PrivateRoute exact path="/tasks" component={TaskList}/>
-                <Route exact path='/tasks/:taskId' component={Task}/>
-                <Route exact path='/solutions' component={SolutionList}/>
-                <Route exact path='/tasks/:taskId/solutions/:solutionId' component={Solution}/>
-                <Route exact path='/users' component={UserList}/>
-                <Route exact path='/users/edit/:userId' component={ChangeUser}/>
-                <Route exact path='/users/:userId' component={User}/>
-                <Route exact path='/roles' component={RoleList}/>
-                <Route exact path='/roles/add' component={ChangeRole} />
-                <Route exact path='/roles/:roleId' component={Role}/>
-                <Route exact path='/roles/edit/:roleId' component={ChangeRole}/>
+                <PrivateRoute exact path='/tasks/:taskId' component={Task}/>
+                <PrivateRoute exact path='/solutions' component={SolutionList}/>
+                <PrivateRoute exact path='/tasks/:taskId/solutions/:solutionId' component={Solution}/>
+                <PrivateRoute exact path='/users' component={UserList}/>
+                <PrivateRoute exact path='/users/edit/:userId' component={ChangeUser}/>
+                <PrivateRoute exact path='/users/:userId' component={User}/>
+                <PrivateRoute exact path='/roles' component={RoleList}/>
+                <PrivateRoute exact path='/roles/add' component={ChangeRole} />
+                <PrivateRoute exact path='/roles/:roleId' component={Role}/>
+                <PrivateRoute exact path='/roles/edit/:roleId' component={ChangeRole}/>
             </Switch>
         </div>
     )
