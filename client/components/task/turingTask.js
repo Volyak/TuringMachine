@@ -32,7 +32,7 @@ class TuringTask extends Component {
                 <div> Алфавит: {alphabet} </div>
                 {
                     alphabet &&
-                    <TuringTable taskId={id} alphabet={alphabet}/>
+                    <TuringTable taskId={id} alphabet={alphabet} />
                 }
             </div>
         )

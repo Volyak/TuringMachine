@@ -26,14 +26,14 @@ export const getSolutionById = (id) => {
         })
 };
 
-export const postSolution = (taskId, solution) => {
+export const postSolution = (taskId, parcel) => {
     return fetch('/api/tasks/' + taskId + '/solutions', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({solution})
+        body: JSON.stringify({parcel})
     })
         .then(response => {
             if (response.status === 200) {

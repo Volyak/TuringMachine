@@ -1,7 +1,7 @@
 export default (table) => {
     let alphabet = table.rows;
     let result = [];
-    
+
     for (let i = 1, l = table.cols.length; i <= l; i++) {
         result[i-1]={};
 

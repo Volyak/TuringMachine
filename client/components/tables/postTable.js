@@ -51,7 +51,7 @@ class PostTable extends Component {
 
     sendSolution = () => {
         const {commands, goTo} = this.state;
-        postSolution(this.taskId, {commands, goTo})
+        postSolution(this.taskId, {table: {commands, goTo}})
             .then(result => {
                 this.setState({resultOfSending: result})
             })

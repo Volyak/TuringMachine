@@ -7,15 +7,22 @@ class PostSolution extends Component {
     constructor(props) {
         super(props);
 
-        const {solution} = props;
-        this.state={
-            taskName: solution.task.name,
-            description: solution.task.description,
-            username: solution.username,
-            table: solution.solution.table,
-            isDone: solution.solution.isDone
+        const {
+            task: {name, description},
+            username,
+            solution: {
+                parcel: {table}, isDone
+            }
+        } = props.solution;
+        this.state = {
+            taskName: name,
+            description,
+            username,
+            table,
+            isDone
         }
     }
+
     render() {
         const {taskName, description, username, table, isDone} = this.state;
 

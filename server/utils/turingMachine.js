@@ -1,4 +1,5 @@
 export default function playTest(solution, test) {
+    console.log(solution);
     const {input, output} = test;
 
     let programOutput = "" + input;

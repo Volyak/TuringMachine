@@ -8,24 +8,32 @@ class TuringSolution extends Component {
     constructor(props) {
         super(props);
 
-        const {solution, task: {name, alphabet, description}, username} = props.solution;
+        const {
+            solution: {
+                parcel: {table, userAlphabet}, isDone},
+            task: {name, alphabet, description},
+            username
+        } = props.solution;
         this.state = {
             taskName: name,
             alphabet,
             description,
+            userAlphabet,
             username,
-            table: transposeTable(solution.table),
-            isDone: solution.isDone
+            table: transposeTable(table),
+            isDone
         }
     }
 
     render() {
-        const {taskName, alphabet, description, username, table, isDone} = this.state;
+        const {taskName, alphabet, description, userAlphabet, username, table, isDone} = this.state;
+        const allAlphabet = alphabet + userAlphabet;
         return (
             <div className={'solution'}>
                 <h3>{taskName}</h3>
                 <div>{description}</div>
                 <div>Алфавит: {alphabet}</div>
+                <div>Служебные символы: {userAlphabet}</div>
                 <div>Отправил: {username}</div>
                 <div>Статус: {isDone.toString()}</div>
                 {
@@ -45,7 +53,7 @@ class TuringSolution extends Component {
                         {
                             table.map((row, index) =>
                                 <tr key={index}>
-                                    <th key={alphabet[index]}>{alphabet[index]}</th>
+                                    <th key={allAlphabet[index]}>{allAlphabet[index]}</th>
                                     {
                                         row.map((cell, index) => {
                                                 let content = cell.writeSymbol ? cell.writeSymbol : '';

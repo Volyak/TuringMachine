@@ -69,11 +69,16 @@ export const SolutionSchema = new Schema({
         type: String,
         required: true
     },
+    parcel:{
+        type: Schema.Types.Mixed,
+        required: true
+    },
+    /*userAlphabet: String,
     table: {
         type: Schema.Types.Mixed,
         required: true
     },
-        /*[
+        [
         [
             {
                 writeSymbol: String,

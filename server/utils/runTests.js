@@ -1,7 +1,7 @@
 import tm from './turingMachine'
 import pm from './postMachine'
 
-export default function runTests(machineType, solution, tests) {
+export default function runTests(machineType, parcel, tests) {
     let machine;
     switch (machineType) {
         case "Turing":
@@ -15,7 +15,7 @@ export default function runTests(machineType, solution, tests) {
     }
     for (let i =0, l = tests.length; i < l; i++){
         try {
-            if (!machine(solution, tests[i])) {
+            if (!machine(parcel.table, tests[i])) {
                 return i + 1;
             }
         }

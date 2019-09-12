@@ -1,28 +1,29 @@
 import taskTypes from "../const/taskTypes";
 
-export default (solution, task) => {
+export default (parcel, task) => {
     switch (task.taskType) {
         case taskTypes.Turing.value :
-            return turingTable(solution, task.alphabet);
+            return turingTable(parcel, task.alphabet);
         default:
-            return solution;
+            return parcel.table;
     }
 }
 
-function turingTable(solution, alphabet) {
+function turingTable(parcel, taskAlphabet) {
     let result = [];
-
-    for (let i = 0, l = solution.length; i < l; i++) {
+    const alphabet = taskAlphabet + parcel.userAlphabet;
+    console.log(taskAlphabet);
+    for (let i = 0, l = parcel.table.length; i < l; i++) {
         result[i] = [];
         for (let j = 0, k = alphabet.length; j < k; j++) {
-            result[i][j] = solution[i][alphabet[j]];
+            result[i][j] = parcel.table[i][alphabet[j]];
         }
     }
 
     return result;
 }
 
-function postTable(solution) {
-    const {commands, goTo} = solution;
+function postTable(parcel) {
+    const {commands, goTo} = parcel.table;
     return {commands, goTo};
 }

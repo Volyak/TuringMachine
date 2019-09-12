@@ -52,17 +52,17 @@ router.route('/api/tasks/:taskId/solutions')
         })
     })
     .post((req, res) => {
-        const {body: {solution}, user: {_id, roleId}, params: {taskId}} = req;
+        const {body: {parcel}, user: {_id, roleId}, params: {taskId}} = req;
         (async () => {
             let hasRight = await checkRight(roleId, groups.Solution, rights.Add, 1);
             if (!hasRight)
                 return res.status(403).end();
             const task = await getTaskById(taskId);
-            const numberOfFailedTest = runTests(task.taskType, solution, task.tests);
+            const numberOfFailedTest = runTests(task.taskType, parcel, task.tests);
             const priority = await getPriority(roleId, groups.Solution, rights.Add);
-            const table = formatTable(solution, task);
+            parcel.table = formatTable(parcel, task);
             const addedSolution = await addSolution({
-                table,
+                parcel,
                 taskId,
                 priority,
                 isDone: numberOfFailedTest === 0,
