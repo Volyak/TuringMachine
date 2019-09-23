@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {getSolutionById} from '../../services/solutionApi'
 import TuringSolution from "./turingSolution";
 import PostSolution from "./postSolution";
+import MarkovSolution from "./markovSolution";
 
 import './css/solution.css';
 import taskTypes from "../../const/taskTypes";
@@ -37,6 +38,10 @@ class Solution extends Component {
                 {
                     taskType === taskTypes.Post.value &&
                     <PostSolution solution={solution}/>
+                }
+                {
+                    taskType === taskTypes.Markov.value &&
+                    <MarkovSolution solution={solution}/>
                 }
             </div>
         )

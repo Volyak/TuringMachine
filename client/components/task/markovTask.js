@@ -1,44 +1,42 @@
 import React, {Component} from 'react'
-import TuringTable from '../tables/turingTable'
+import MarkovTable from '../tables/markovTable'
 
 import './css/task.css';
 
-class TuringTask extends Component {
+class MarkovTask extends Component {
     constructor(props){
         super(props);
         this.state={
             id: '',
             name: '',
             description: '',
-            alphabet: '',
-            initTableState: null
+            alphabet: ''
         }
     }
 
     componentDidMount(){
-        const {task, init} = this.props;
+        const {task} = this.props;
         this.setState({
             id: task._id,
             name: task.name,
             description: task.description,
-            alphabet: task.alphabet,
-            initTableState: init})
+            alphabet: task.alphabet})
     }
 
     render() {
-        const {id, name, description, alphabet, initTableState} = this.state;
+        const {id, name, description, alphabet} = this.state;
         return (
             <div className={'task'}>
                 <h3> {name} </h3>
                 <div> {description} </div>
                 <div> Алфавит: {alphabet} </div>
                 {
-                    alphabet && initTableState  &&
-                    <TuringTable taskId={id} alphabet={alphabet} init={initTableState}/>
+                    alphabet &&
+                    <MarkovTable taskId={id} alphabet={alphabet} />
                 }
             </div>
         )
     }
 }
 
-export default TuringTask;
+export default MarkovTask;

@@ -1,5 +1,6 @@
 import tm from './turingMachine'
 import pm from './postMachine'
+import mm from './markovMachine'
 
 export default function runTests(machineType, parcel, tests) {
     let machine;
@@ -9,6 +10,9 @@ export default function runTests(machineType, parcel, tests) {
             break;
         case "Post":
             machine = pm;
+            break;
+        case "Markov":
+            machine = mm;
             break;
         default:
             return 0;

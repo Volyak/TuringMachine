@@ -129,7 +129,8 @@ class TaskChangeForm extends Component {
                     className={'input'}
                     onChange={this.handleChangedDescription}
                 />
-                {type === taskTypes.Turing.value &&
+                {(type === taskTypes.Turing.value ||
+                    type === taskTypes.Markov.value) &&
                 <div>
                     <label htmlFor={'alphabet'}>Алфавит</label>
                     <input
