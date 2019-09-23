@@ -11,7 +11,7 @@ import RoleList from '../role/list'
 import Role from '../role/role'
 import ChangeRole from '../role/changeRole'
 import PrivateRoute from '../common/PrivateRoute'
-
+import Support from '../support/support'
 import './css/appview.css';
 
 const AppView = (props) => {
@@ -29,6 +29,7 @@ const AppView = (props) => {
                 <PrivateRoute exact path='/roles/add' component={ChangeRole} />
                 <PrivateRoute exact path='/roles/:roleId' component={Role}/>
                 <PrivateRoute exact path='/roles/edit/:roleId' component={ChangeRole}/>
+                <PrivateRoute exact path='/support' component={Support}/>
             </Switch>
         </div>
     )

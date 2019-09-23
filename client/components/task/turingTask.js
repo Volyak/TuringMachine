@@ -16,13 +16,15 @@ class TuringTask extends Component {
     }
 
     componentDidMount(){
-        const {task, init} = this.props;
+        const {task} = this.props;
+
+        console.log(this.props);
         this.setState({
             id: task._id,
             name: task.name,
             description: task.description,
             alphabet: task.alphabet,
-            initTableState: init})
+            initTableState: ''})
     }
 
     render() {
@@ -33,7 +35,7 @@ class TuringTask extends Component {
                 <div> {description} </div>
                 <div> Алфавит: {alphabet} </div>
                 {
-                    alphabet && initTableState  &&
+                    alphabet &&
                     <TuringTable taskId={id} alphabet={alphabet} init={initTableState}/>
                 }
             </div>

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import {getSolutionById} from '../../services/solutionApi'
 import TuringSolution from "./turingSolution";
 import PostSolution from "./postSolution";
@@ -29,6 +30,10 @@ class Solution extends Component {
 
     render() {
         const {solution, taskType} = this.state;
+        let init;
+        if(solution)
+         init = solution.solution;
+        console.log(solution);
         return (
             <div className={'solution'}>
                 {
@@ -42,6 +47,14 @@ class Solution extends Component {
                 {
                     taskType === taskTypes.Markov.value &&
                     <MarkovSolution solution={solution}/>
+                }
+                { solution &&
+                <Link
+                    to={{
+                        pathname: `/tasks/${solution.task._id}`,
+                        state:{init}}}>
+                    Home 2
+                </Link>
                 }
             </div>
         )

@@ -30,18 +30,19 @@ class Navigation extends Component {
         const {tasks, solutions, users, roles} = this.state;
         return (
             <div>
-                {   tasks &&
-                    <Link to='/tasks'>Задания</Link>
+                {tasks &&
+                <Link to='/tasks'>Задания</Link>
                 }
-                {   solutions &&
-                    <Link to='/solutions'>Решения</Link>
+                {solutions &&
+                <Link to='/solutions'>Решения</Link>
                 }
-                {   users &&
-                    <Link to='/users'>Пользователи</Link>
+                {users &&
+                <Link to='/users'>Пользователи</Link>
                 }
-                {   roles &&
-                    <Link to='/roles'>Роли</Link>
+                {roles &&
+                <Link to='/roles'>Роли</Link>
                 }
+                <Link to='/support'>Помощь</Link>
             </div>
         )
     }
