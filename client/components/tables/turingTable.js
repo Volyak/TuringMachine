@@ -13,17 +13,48 @@ class TuringTable extends Component {
         for (let i = 0; i < props.alphabet.length; i++) {
             startRows.push(props.alphabet[i]);
         }
-        let rows = [...startRows];
 
-        this.state = {
-            cols: ["Q1", "Q2"],
-            startRows,
-            rows,
-            Q1: this.setStartValue(rows),
-            Q2: this.setStartValue(rows),
-            resultOfSending: '',
-            userAlphabet: ''
-        };
+        if (props.init) {
+
+            const {table, userAlphabet} = props.init;
+            let userAlphabetArray = [];
+            for (let i = 0; i < userAlphabet.length; i++) {
+                userAlphabetArray.push(userAlphabet[i]);
+            }
+            let rows = [...startRows, ...userAlphabetArray];
+            let cols = [];
+
+            let QArray = [];
+            for (let i = 0, l = table.length; i < l; i++) {
+                cols.push("Q"+(i+1));
+                QArray["Q"+(i+1)] = this.setStartValue(rows);
+                for(let j=0, k = table[i].length; j < k; j++){
+                    QArray["Q"+(i+1)][rows[j]]=(table[i][j].writeSymbol ? table[i][j].writeSymbol: "")+table[i][j].move + table[i][j].nextState;
+                }
+                console.log(QArray);
+            }
+
+            this.state = {
+                cols,
+                startRows,
+                rows,
+                ...QArray,
+                resultOfSending: '',
+                userAlphabet
+            }
+        } else {
+
+            let rows = [...startRows];
+            this.state = {
+                cols: ["Q1", "Q2"],
+                startRows,
+                rows,
+                Q1: this.setStartValue(rows),
+                Q2: this.setStartValue(rows),
+                resultOfSending: '',
+                userAlphabet: ''
+            };
+        }
     }
 
     setStartValue = (rows) => {
@@ -109,13 +140,18 @@ class TuringTable extends Component {
         const table = parseTable(this.state);
         postSolution(this.taskId, {table, userAlphabet})
             .then(result => {
-            this.setState({resultOfSending: result})
-        })
+                this.setState({resultOfSending: result})
+            })
     };
 
     render() {
         const {cols, rows, resultOfSending, userAlphabet} = this.state;
-
+        console.log('cols');
+        console.log(cols);
+        console.log('rows');
+        console.log(rows);
+        console.log('this.state');
+        console.log(this.state);
         const head = cols.map((col) =>
             <th key={col}>{col}
                 <button className={'table-container__delete-btn'} id={"delete_" + col} onClick={this.removeColumn}>X

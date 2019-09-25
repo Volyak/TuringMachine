@@ -9,7 +9,8 @@ class PostTask extends Component {
         this.state = {
             id: '',
             name: '',
-            description: ''
+            description: '',
+            initTableState: props.init
         }
     }
 
@@ -23,13 +24,13 @@ class PostTask extends Component {
     }
 
     render() {
-        const {id, name, description} = this.state;
+        const {id, name, description, initTableState} = this.state;
         return (
             <div className={'task'}>
                 <h3> {name} </h3>
                 <div> {description} </div>
                 { id &&
-                    <PostTable taskId={id}/>
+                    <PostTable taskId={id} init={initTableState}/>
                 }
             </div>
         )

@@ -6,25 +6,24 @@ import './css/task.css';
 class TuringTask extends Component {
     constructor(props){
         super(props);
+
         this.state={
             id: '',
             name: '',
             description: '',
             alphabet: '',
-            initTableState: null
+            initTableState: props.init
         }
     }
 
     componentDidMount(){
         const {task} = this.props;
-
-        console.log(this.props);
         this.setState({
             id: task._id,
             name: task.name,
             description: task.description,
-            alphabet: task.alphabet,
-            initTableState: ''})
+            alphabet: task.alphabet
+            })
     }
 
     render() {

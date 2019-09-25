@@ -10,12 +10,22 @@ class PostTable extends Component {
         super(props);
         this.taskId = props.taskId;
 
-        this.state = {
-            commands: new Array(startLength).fill(""),
-            goTo: new Array(startLength).fill(""),
-            max: startLength,
-            resultOfSending: ''
-        };
+        if(props.init){
+            const {commands,goTo} = props.init.table;
+            this.state = {
+                commands,
+                goTo,
+                max: startLength,
+                resultOfSending: ''
+            };
+        }   else {
+            this.state = {
+                commands: new Array(startLength).fill(""),
+                goTo: new Array(startLength).fill(""),
+                max: startLength,
+                resultOfSending: ''
+            };
+        }
     }
 
     handleChangeCommand = (e) => {

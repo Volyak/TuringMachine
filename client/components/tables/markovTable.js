@@ -9,13 +9,22 @@ class MarkovTable extends Component {
     constructor(props) {
         super(props);
         this.taskId = props.taskId;
-
-        this.state = {
-            patterns: new Array(startLength).fill(""),
-            replacements: new Array(startLength).fill(""),
-            max: startLength,
-            resultOfSending: ''
-        };
+        if (props.init){
+            const {patterns, replacements} = props.init.table;
+            this.state = {
+                patterns,
+                replacements,
+                max: startLength,
+                resultOfSending: ''
+            };
+        }else {
+            this.state = {
+                patterns: new Array(startLength).fill(""),
+                replacements: new Array(startLength).fill(""),
+                max: startLength,
+                resultOfSending: ''
+            };
+        }
     }
 
     handleChangePattern = (e) => {

@@ -10,21 +10,25 @@ import './css/task.css';
 class Task extends Component {
     constructor(props) {
         super(props);
+        let init;
+
+        if(this.props.location.state){
+            init = this.props.location.state.init;
+        }
         this.state = {
-            initTableState: null,
+            initTableState: init,
             taskType: null,
             task: null
-        }
+        };
+        console.log(init);
     }
 
     componentDidMount() {
-        const {initState} = this.props;
         getTask(this.props.match.params.taskId)
             .then(task => {
                 this.setState({
                     taskType: task.taskType,
-                    task: task,
-                    initTableState: initState
+                    task: task
                 })
             });
     }
@@ -43,7 +47,7 @@ class Task extends Component {
                 }
                 {
                     taskType === taskTypes.Markov.value &&
-                    <MarkovTask task={task} init={initTableState}/>
+                    <MarkovTask task={task} init={initTableState} />
                 }
             </div>
         )

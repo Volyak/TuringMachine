@@ -30,10 +30,8 @@ class Solution extends Component {
 
     render() {
         const {solution, taskType} = this.state;
-        let init;
-        if(solution)
-         init = solution.solution;
-        console.log(solution);
+        if(!solution)
+            return null;
         return (
             <div className={'solution'}>
                 {
@@ -52,8 +50,8 @@ class Solution extends Component {
                 <Link
                     to={{
                         pathname: `/tasks/${solution.task._id}`,
-                        state:{init}}}>
-                    Home 2
+                        state:{init: this.state.solution.solution.parcel}}}>
+                    Продолжить решение
                 </Link>
                 }
             </div>

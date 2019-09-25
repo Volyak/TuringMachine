@@ -10,7 +10,8 @@ class MarkovTask extends Component {
             id: '',
             name: '',
             description: '',
-            alphabet: ''
+            alphabet: '',
+            initTableState: props.init
         }
     }
 
@@ -24,7 +25,7 @@ class MarkovTask extends Component {
     }
 
     render() {
-        const {id, name, description, alphabet} = this.state;
+        const {id, name, description, alphabet, initTableState} = this.state;
         return (
             <div className={'task'}>
                 <h3> {name} </h3>
@@ -32,7 +33,7 @@ class MarkovTask extends Component {
                 <div> Алфавит: {alphabet} </div>
                 {
                     alphabet &&
-                    <MarkovTable taskId={id} alphabet={alphabet} />
+                    <MarkovTable taskId={id} alphabet={alphabet} init={initTableState}/>
                 }
             </div>
         )
