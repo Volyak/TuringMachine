@@ -19,7 +19,7 @@ const RoleListItem = (props) => {
         <div className={'item'}>
             <Link to={'/roles/' + id}>{name}</Link>
             {canUpdateRole &&
-                <Link to={'/roles/edit/' + id}>edit</Link>
+                <Link to={'/roles/edit/' + id}>редактировать</Link>
             }
             {canDeleteRole &&
                 <button onClick={deleteRole}>X</button>

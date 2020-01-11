@@ -147,20 +147,20 @@ class TaskChangeForm extends Component {
                     <input
                         id='newInput'
                         type='text'
-                        placeholder='input'
+                        placeholder='начальное состояние'
                         value={newInput}
                         onChange={this.handleChangedNewTest}/>
                     <input
                         id='newOutput'
                         type='text'
-                        placeholder='output'
+                        placeholder='конечное состояние'
                         value={newOutput}
                         onChange={this.handleChangedNewTest}/>
                     <button onClick={this.addTest}>+</button>
                 </div>
                 <div className={'form__button-panel'}>
-                    <button onClick={this.sendData}>Send</button>
-                    <button onClick={this.props.close}>Close</button>
+                    <button onClick={this.sendData}>Добавить</button>
+                    <button onClick={this.props.close}>Отмена</button>
                 </div>
             </div>
         )

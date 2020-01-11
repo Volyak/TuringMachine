@@ -15,7 +15,7 @@ const Controls = (props) => {
     return (
         <div  className={'appbar__button-panel'}>
             <button onClick={signOut} className={'appbar__button'}>
-                Sign out
+                Выход
             </button>
         </div>
     );

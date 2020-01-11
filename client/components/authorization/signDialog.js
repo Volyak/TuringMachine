@@ -11,12 +11,12 @@ import './css/signDialog.css'
 
 const signIn = {
     id: "signIn",
-    text: "Sign in"
+    text: "Вход"
 };
 
 const signUp = {
     id: "signUp",
-    text: "Sign up"
+    text: "Регистрация"
 };
 
 class SignDialog extends Component {

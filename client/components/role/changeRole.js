@@ -79,7 +79,7 @@ class ChangeRole extends Component {
                         }
                     </div>)
                 }
-                <button onClick={this.send}>Send</button>
+                <button onClick={this.send}>Применить</button>
             </div>
         )
     }

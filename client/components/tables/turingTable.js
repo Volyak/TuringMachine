@@ -26,10 +26,10 @@ class TuringTable extends Component {
 
             let QArray = [];
             for (let i = 0, l = table.length; i < l; i++) {
-                cols.push("Q"+(i+1));
-                QArray["Q"+(i+1)] = this.setStartValue(rows);
-                for(let j=0, k = table[i].length; j < k; j++){
-                    QArray["Q"+(i+1)][rows[j]]=(table[i][j].writeSymbol ? table[i][j].writeSymbol: "")+table[i][j].move + table[i][j].nextState;
+                cols.push("Q" + (i + 1));
+                QArray["Q" + (i + 1)] = this.setStartValue(rows);
+                for (let j = 0, k = table[i].length; j < k; j++) {
+                    QArray["Q" + (i + 1)][rows[j]] = (table[i][j].writeSymbol ? table[i][j].writeSymbol : "") + table[i][j].move + table[i][j].nextState;
                 }
                 console.log(QArray);
             }
@@ -40,6 +40,7 @@ class TuringTable extends Component {
                 rows,
                 ...QArray,
                 resultOfSending: '',
+                errorLine: '',
                 userAlphabet
             }
         } else {
@@ -52,10 +53,71 @@ class TuringTable extends Component {
                 Q1: this.setStartValue(rows),
                 Q2: this.setStartValue(rows),
                 resultOfSending: '',
+                errorLine: '',
                 userAlphabet: ''
             };
         }
     }
+
+    getMoveIndex = (value) => {
+        const L = value.lastIndexOf("L");
+        const R = value.lastIndexOf("R");
+        const S = value.lastIndexOf("S");
+        return Math.max(L, R, S);
+    };
+
+    checkTableSyntax = () => {
+        const {rows, cols} = this.state;
+        let result = "", alphabetResult = "", sellsResult = "";
+        console.log(result);
+        alphabetResult = this.checkUserAlphabet();
+        let currentQ, currentSell;
+        for (let i = 0; i < cols.length; i++) {
+            currentQ = this.state[cols[i]];
+            for (let j = 0; j < rows.length; j++) {
+                currentSell = currentQ[rows[j]];
+                if (!this.checkSellSyntax(currentSell)) {
+                    sellsResult += " {" + cols[i] + "," + rows[j] + "}";
+                }
+            }
+        }
+
+        result +=alphabetResult;
+        if(sellsResult)
+            result+="Проверьте следующие ячейки: "+ sellsResult;
+        return result;
+    };
+
+    checkSellSyntax = (value) => {
+        const {alphabet} = this.props;
+        const {userAlphabet, cols} = this.state;
+
+        if (!value) return false;
+
+        const moveCommandIndex = this.getMoveIndex(value);
+        if (moveCommandIndex === -1 || moveCommandIndex > 1) {
+            return false;
+        }
+
+        const writeSymbol = value.substring(0, moveCommandIndex);
+
+        if (writeSymbol && alphabet.indexOf(writeSymbol) === -1 && userAlphabet.indexOf(writeSymbol) === -1)
+            return false;
+
+        const nextState = value.substring(moveCommandIndex + 1);
+
+        return !(isNaN(nextState) || nextState < 0 || nextState > cols.length);
+    };
+
+    checkUserAlphabet = () => {
+        const {userAlphabet, startRows} = this.state;
+
+        for(let i=0;i<userAlphabet.length;i++)
+            for(let j=0;j<startRows.length;j++)
+                if(userAlphabet[i]===startRows[j])
+                    return "Служебные символы содержат символы исходного алфавита. ";
+        return "";
+    };
 
     setStartValue = (rows) => {
         let Q = {};
@@ -136,6 +198,12 @@ class TuringTable extends Component {
     };
 
     sendSolution = () => {
+        const syntaxErrors = this.checkTableSyntax();
+        if (syntaxErrors) {
+            let result = "Решение не отправлено. " + syntaxErrors;
+            this.setState({errorLine: result});
+            return false;
+        }
         const {userAlphabet} = this.state;
         const table = parseTable(this.state);
         postSolution(this.taskId, {table, userAlphabet})
@@ -145,11 +213,8 @@ class TuringTable extends Component {
     };
 
     render() {
-        const {cols, rows, resultOfSending, userAlphabet} = this.state;
-        console.log('cols');
-        console.log(cols);
-        console.log('rows');
-        console.log(rows);
+        const {cols, rows, resultOfSending, userAlphabet, errorLine} = this.state;
+
         console.log('this.state');
         console.log(this.state);
         const head = cols.map((col) =>
@@ -178,6 +243,9 @@ class TuringTable extends Component {
         const result = resultOfSending &&
             <label>{this.state.resultOfSending.isDone.toString()}</label>;
 
+        const error = errorLine &&
+            <label>{this.state.errorLine}</label>;
+
         return (
             <div className={'table-container'}>
                 <div> Служебные символы:
@@ -194,9 +262,10 @@ class TuringTable extends Component {
                     {body}
                     </tbody>
                 </table>
-                <button onClick={this.addColumn}>Add</button>
-                <button onClick={this.sendSolution}>Send</button>
+                <button onClick={this.addColumn}>Добавить состояние</button>
+                <button onClick={this.sendSolution}>Отправить</button>
                 {result}
+                {error}
             </div>
         )
     }

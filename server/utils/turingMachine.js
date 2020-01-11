@@ -8,30 +8,53 @@ export default function playTest(solution, test) {
     let step = 0;
 
     while (step < 1000) {
-        const currentSymbol = input[index];
+        const currentSymbol = programOutput[index];
         let program = solution[state][currentSymbol];
 
-        //тут ошибка
         if (program.writeSymbol)
-            programOutput = replaceAt(programOutput,index,program.writeSymbol);
-
-        //Ошибка если нет состояния
+            programOutput = replaceAt(programOutput, index, program.writeSymbol);
 
         if (program.move === "S") {
-            step++;
+            programOutput = deleteEmptySpaces(programOutput);
             break;
-        }
-        else {
-            program.move === "R" ? index++ : index--;
-        }
+        } else if (program.move === "R") {
+            if (index + 1 === programOutput.length) {
+                index = index + 2;
+                programOutput = addEmptySpaces(programOutput);
+            } else
+                index++;
+        } else if (index - 1 < 0)
+            programOutput = addEmptySpaces(programOutput);
+        else
+            index--;
 
-        //Ошибка если состояние больше чем в таблице
-        state = program.nextState-1;
+        state = program.nextState - 1;
         step++;
     }
     return output === programOutput;
 }
 
-function replaceAt(string,index,symbol) {
+function addEmptySpaces(programOutput) {
+    return "_" + programOutput + "_";
+}
+
+function deleteEmptySpaces(programOutput) {
+    let cutIndex = 0;
+    for (let i = 0; i < programOutput.length; i++) {
+        if (programOutput[i] !== "_")
+            break;
+        cutIndex++;
+    }
+    programOutput = programOutput.substring(cutIndex);
+    cutIndex = programOutput.length - 1;
+    for (let i = programOutput.length; i > 0; i--) {
+        if (programOutput[i] !== "_")
+            break;
+        cutIndex--;
+    }
+    return programOutput.substring(0, cutIndex);
+}
+
+function replaceAt(string, index, symbol) {
     return string.substring(0, index) + symbol + string.substring(index + 1);
 }

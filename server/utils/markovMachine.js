@@ -2,7 +2,7 @@ export default function playTest(solution, test) {
 
     const {input, output} = test;
     const {patterns, replacements} = solution;
-    const maxSteps = 100;
+    const maxSteps = 1000;
 
     let programOutput = "" + input;
     let step = 0;
@@ -56,10 +56,4 @@ function makeReplacement(input, resultOfFind, replacements) {
         output += input.substring(startIndex + 1);
     }
     return {stop, output};
-}
-
-function checkStop(resultOfFind, replacements) {
-    const {patternIndex} = resultOfFind;
-    const replacement = replacements[patternIndex];
-    return replacement.indexOf(".") !== -1;
 }

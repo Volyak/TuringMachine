@@ -28,20 +28,20 @@ class SignInForm extends Component {
             <div className={'sign__form'}>
                 <input
                     type='text'
-                    placeholder="username"
+                    placeholder="Имя пользователя"
                     onChange={this.handleChangedUsername}
                     value={username}
                     className={'sign__input'}/>
                 <input
                     type='text'
-                    placeholder="password"
+                    placeholder="Пароль"
                     onChange={this.handleChangedPassword}
                     value={password}
                     className={'sign__input'}/>
 
                 <div className={'sign__button-panel'}>
-                    <button onClick={this.signIn} className={'sign__button'}>Sign in</button>
-                    <button onClick={closeForm} className={'sign__button'}>Cancel</button>
+                    <button onClick={this.signIn} className={'sign__button'}>Войти</button>
+                    <button onClick={closeForm} className={'sign__button'}>Отмена</button>
                 </div>
             </div>
         )

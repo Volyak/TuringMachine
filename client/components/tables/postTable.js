@@ -10,20 +10,24 @@ class PostTable extends Component {
         super(props);
         this.taskId = props.taskId;
 
-        if(props.init){
-            const {commands,goTo} = props.init.table;
+        if (props.init) {
+            const {commands, goTo} = props.init.table;
             this.state = {
                 commands,
                 goTo,
                 max: startLength,
-                resultOfSending: ''
+                resultOfSending: '',
+                errorLine: '',
+                commandTypes: 'VX><?!'
             };
-        }   else {
+        } else {
             this.state = {
                 commands: new Array(startLength).fill(""),
                 goTo: new Array(startLength).fill(""),
                 max: startLength,
-                resultOfSending: ''
+                resultOfSending: '',
+                errorLine: '',
+                commandTypes: 'VX><?!'
             };
         }
     }
@@ -59,7 +63,55 @@ class PostTable extends Component {
         this.setState({commands, goTo});
     };
 
+    checkTableSyntax = () => {
+        const {commands, goTo} = this.state;
+        let result = "";
+        for (let i = 0; i < commands.length; i++) {
+            if (!this.checkCommandSellSyntax(commands[i]))
+                result += " [" + (i + 1) + ", Команда]";
+        }
+        for (let i = 0; i < goTo.length; i++) {
+            if (!this.checkGoToSellSyntax(goTo[i], i))
+                result += " [" + (i + 1) + ", Переход]";
+        }
+        return result;
+    };
+
+    checkCommandSellSyntax = (value) => {
+        const {commandTypes} = this.state;
+
+        if (!value || value.length > 1) return false;
+
+        return commandTypes.indexOf(value) !== -1;
+    };
+
+    checkGoToSellSyntax = (value, index) => {
+        const {commands, goTo} = this.state;
+
+        if (!value) {
+            return commands[index] === "!";
+        }
+
+        if (commands[index] === "?") {
+            if (isNaN(value)) {
+                const i = value.indexOf(",");
+                if (i !== -1 && i + 1 < value.length) {
+                    const left = value.substring(0, i);
+                    const right = value.substring(i + 1);
+                    return (left <= goTo.length && right <= goTo.length);
+                } else return false;
+            } else return false;
+        }
+        return value <= goTo.length;
+    };
+
     sendSolution = () => {
+        const syntaxErrors = this.checkTableSyntax();
+        if (syntaxErrors) {
+            let result = "Решение не отправлено. Проверьте следующие ячейки: " + syntaxErrors;
+            this.setState({errorLine: result});
+            return false;
+        }
         const {commands, goTo} = this.state;
         postSolution(this.taskId, {table: {commands, goTo}})
             .then(result => {
@@ -68,7 +120,7 @@ class PostTable extends Component {
     };
 
     render() {
-        const {commands, goTo, resultOfSending} = this.state;
+        const {commands, goTo, resultOfSending, errorLine} = this.state;
 
         const body = commands.map((command, i) =>
             <tr key={i}>
@@ -93,6 +145,9 @@ class PostTable extends Component {
         const result = resultOfSending &&
             <label>{this.state.resultOfSending.isDone.toString()}</label>;
 
+        const error = errorLine &&
+            <label>{this.state.errorLine}</label>;
+
         return (
             <div className={'table-container'}>
                 <table>
@@ -107,9 +162,10 @@ class PostTable extends Component {
                     {body}
                     </tbody>
                 </table>
-                <button onClick={this.addLine}>Add</button>
-                <button onClick={this.sendSolution}>Send</button>
+                <button onClick={this.addLine}>Добавить команду</button>
+                <button onClick={this.sendSolution}>Отправить</button>
                 {result}
+                {error}
             </div>
         )
     }

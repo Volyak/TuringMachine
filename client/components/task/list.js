@@ -36,7 +36,7 @@ class TaskList extends Component {
         return (
             <div className={'task__list'}>
                 {canAddTask &&
-                <button onClick={this.openAddingForm}>Add Task</button>
+                <button onClick={this.openAddingForm}>Добавить задание</button>
                 }
                 <List/>
                 <ChangeFormController isOpen={addingFormIsOpen} close={this.closeAddingForm}/>

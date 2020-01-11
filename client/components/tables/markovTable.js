@@ -9,20 +9,22 @@ class MarkovTable extends Component {
     constructor(props) {
         super(props);
         this.taskId = props.taskId;
-        if (props.init){
+        if (props.init) {
             const {patterns, replacements} = props.init.table;
             this.state = {
                 patterns,
                 replacements,
                 max: startLength,
-                resultOfSending: ''
+                resultOfSending: '',
+                errorLine: ''
             };
-        }else {
+        } else {
             this.state = {
                 patterns: new Array(startLength).fill(""),
                 replacements: new Array(startLength).fill(""),
                 max: startLength,
-                resultOfSending: ''
+                resultOfSending: '',
+                errorLine: ''
             };
         }
     }
@@ -58,7 +60,39 @@ class MarkovTable extends Component {
         this.setState({patterns, replacements});
     };
 
+    checkTableSyntax = () => {
+        const {patterns, replacements} = this.state;
+        let result = "";
+        const hasStop = this.checkReplacementsHaveStop(replacements);
+        if (!hasStop)
+            result += "Отсутствует конечная формула замены. ";
+        const repeatResult = this.checkPatternsRepeat(patterns);
+        result += repeatResult;
+        return result;
+    };
+
+    checkReplacementsHaveStop = (replacements) => {
+        for (let i = 0; i < replacements.length; i++)
+            if (replacements[i].indexOf(".") !== -1)
+                return true;
+        return false;
+    };
+
+    checkPatternsRepeat = (patterns) => {
+        for (let i = 0; i < patterns.length - 1; i++)
+            for (let j = i + 1; j < patterns.length; j++)
+                if (patterns[i] === patterns[j])
+                    return "Образцы " + (i + 1) + ", " + (j + 1) + " повторяются.";
+        return "";
+    };
+
     sendSolution = () => {
+        const syntaxErrors = this.checkTableSyntax();
+        if (syntaxErrors) {
+            let result = "Решение не отправлено. " + syntaxErrors;
+            this.setState({errorLine: result});
+            return false;
+        }
         const {patterns, replacements} = this.state;
         postSolution(this.taskId, {table: {patterns, replacements}})
             .then(result => {
@@ -67,7 +101,7 @@ class MarkovTable extends Component {
     };
 
     render() {
-        const {patterns, replacements, resultOfSending} = this.state;
+        const {patterns, replacements, resultOfSending, errorLine} = this.state;
 
         const body = patterns.map((pattern, i) =>
             <tr key={i}>
@@ -95,6 +129,9 @@ class MarkovTable extends Component {
         const result = resultOfSending &&
             <label>{this.state.resultOfSending.isDone.toString()}</label>;
 
+        const error = errorLine &&
+            <label>{this.state.errorLine}</label>;
+
         return (
             <div className={'table-container'}>
                 <table>
@@ -102,7 +139,7 @@ class MarkovTable extends Component {
                     <tr>
                         <th key={'1'}>№</th>
                         <th key={'2'}>Образец</th>
-                        <th> </th>
+                        <th></th>
                         <th key={'3'}>Замена</th>
                     </tr>
                     </thead>
@@ -110,9 +147,10 @@ class MarkovTable extends Component {
                     {body}
                     </tbody>
                 </table>
-                <button onClick={this.addLine}>Add</button>
-                <button onClick={this.sendSolution}>Send</button>
+                <button onClick={this.addLine}>Добавить формулу</button>
+                <button onClick={this.sendSolution}>Отправить</button>
                 {result}
+                {error}
             </div>
         )
     }

@@ -24,7 +24,7 @@ class UserListItem extends Component {
             <div className={'item'}>
                 <Link to={'/users/' + id}>{username + "   " + role}</Link>
                 {canUpdateUser &&
-                <Link to={'/users/edit/' + id}>edit</Link>
+                <Link to={'/users/edit/' + id}>редактировать</Link>
                 }
                 {canDeleteUser &&
                 <button onClick={this.deleteUser}>X</button>

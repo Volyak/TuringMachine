@@ -13,8 +13,6 @@ const AppBar = (props) => {
                 props.authorized &&
                 <Navigation/>
             }
-            <label>{props.username}</label>
-            <label>{props.role}</label>
             <Controls/>
         </div>
     )

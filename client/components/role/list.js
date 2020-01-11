@@ -21,7 +21,7 @@ class RoleList extends Component {
         return (
             <div>
                 {canAddRole &&
-                    <Link to={'/roles/add/'}>Add Role</Link>
+                    <Link to={'/roles/add/'}>Добавить роль</Link>
                 }
                 <List/>
             </div>

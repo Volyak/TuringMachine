@@ -42,7 +42,7 @@ class TaskListItem extends Component {
                 </div>
                 <div className={'item__buttons'}>
                     {canUpdateTask &&
-                    <button onClick={this.openEditForm}>edit</button>
+                    <button onClick={this.openEditForm}>изменить</button>
                     }
                     {canDeleteTask &&
                     <button onClick={this.deleteTask}>X</button>

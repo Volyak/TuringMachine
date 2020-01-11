@@ -48,7 +48,7 @@ class ChangeUser extends Component {
                     <select onChange={this.handleChangedRole} value={selectedRole}>
                         {roles.map(r => <option key={r} value={r}>{r}</option>)}
                     </select>
-                <button onClick={this.send}>Send</button>
+                <button onClick={this.send}>Применить</button>
             </div>
         )
     }

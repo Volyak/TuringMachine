@@ -8,7 +8,7 @@ export default function playTest(solution, test) {
     let step = 0;
     let error = false;
     let stop = false;
-    while (step < 10) {
+    while (step < 1000) {
         const command = commands[currentLine];
         switch (command) {
             case "V":
@@ -32,6 +32,7 @@ export default function playTest(solution, test) {
                 else
                     index++;
                 currentLine = getNextLine(currentLine, goTo);
+                console.log(index);
                 break;
             case "<":
                 if(index - 1 < 0)
@@ -39,6 +40,7 @@ export default function playTest(solution, test) {
                 else
                     index --;
                 currentLine = getNextLine(currentLine, goTo);
+                console.log(index);
                 break;
             case "?":
                 currentLine = programOutput[index] === " " ? getFirstNextLine(goTo[currentLine]) :
@@ -70,7 +72,7 @@ function getNextLine(currentLine, goTo) {
     return next - 1;
 }
 function addEmptySpaces(programOutput) {
-    return " "+programOutput+ " ";
+    return " "+programOutput + " ";
 }
 
 function addMark(input, index) {

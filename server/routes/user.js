@@ -4,6 +4,7 @@ import {
     getUserById,
     getAll,
     updateUser,
+    deleteUser
 } from '../mongoose/api/user'
 import {deleteAllByAuthorId} from "../mongoose/api/solution";
 import {checkRight, getRoleById, getRoleByName, getUserPriority} from "../mongoose/api/role"
@@ -54,7 +55,7 @@ router.route('/api/users/:userId')
             let hasRight = await checkRight(roleId, groups.User, rights.Delete, foundedUserPriority);
             if (foundedUser && hasRight) {
                 await deleteAllByAuthorId(foundedUser._id);
-                //await deleteUser(userId);
+                await deleteUser(userId);
                 return res.status(200).end();
             } else {
                 return res.status(403).end();
