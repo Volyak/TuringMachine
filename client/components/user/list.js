@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import * as actions from '../../redux/actions/userActions'
 import getList from '../common/list'
 
+import './css/list.css'
+
 class UserList extends Component {
 
     componentDidMount() {
@@ -14,7 +16,11 @@ class UserList extends Component {
     render() {
         const {users} = this.props;
         const List = getList(UserListItem, users);
-        return (<List/>)
+        return (
+            <div className={'user__list'}>
+                <List/>
+            </div>
+        )
     }
 }
 

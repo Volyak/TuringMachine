@@ -37,18 +37,22 @@ class ChangeUser extends Component {
 
     send = () => {
         editUser(this.id, {role: this.state.selectedRole});
+        document.location.href = "/users";
     };
 
     render() {
         const {username, selectedRole, roles} = this.state;
-
+        const name = "Имя: " + username;
         return (
             <div>
-                <h3> {username} </h3>
-                    <select onChange={this.handleChangedRole} value={selectedRole}>
-                        {roles.map(r => <option key={r} value={r}>{r}</option>)}
-                    </select>
-                <button onClick={this.send}>Применить</button>
+                <h3> {name} </h3>
+                <h3>Роль :</h3>
+                <select onChange={this.handleChangedRole} value={selectedRole}>
+                    {roles.map(r => <option key={r} value={r}>{r}</option>)}
+                </select>
+                <div>
+                    <button onClick={this.send}>Применить</button>
+                </div>
             </div>
         )
     }

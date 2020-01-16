@@ -1,17 +1,13 @@
-.solution {
+.role__list {
     display: flex;
     flex-direction: column;
     width: 90%;
     height: 89.7%;
     padding: 5%;
-    background: white;
+    background-color: white;
 }
 
-.solution > div {
-    padding: 10px 0;
-}
-
-.solution > button {
+.role__list > button {
     align-self: flex-end;
     background-color: lightskyblue;
     border: none;

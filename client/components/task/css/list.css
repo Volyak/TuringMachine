@@ -4,12 +4,12 @@
     width: 90%;
     height: 89.7%;
     padding: 5%;
-    background: white;
+    background-color: white;
 }
 
 .task__list > button {
     align-self: flex-end;
-    background: lightskyblue;
+    background-color: lightskyblue;
     border: none;
     color: white;
     height: 30px;

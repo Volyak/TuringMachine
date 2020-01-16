@@ -73,26 +73,6 @@ export const SolutionSchema = new Schema({
         type: Schema.Types.Mixed,
         required: true
     },
-    /*userAlphabet: String,
-    table: {
-        type: Schema.Types.Mixed,
-        required: true
-    },
-        [
-        [
-            {
-                writeSymbol: String,
-                move: {
-                    type: String,
-                    required: true
-                },
-                nextState: {
-                    type: Number,
-                    required: true
-                }
-            }
-        ]
-    ],*/
     isDone: {
         type: Boolean,
         required: true

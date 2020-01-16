@@ -3,6 +3,7 @@ import {updateUser, User} from '../mongoose/api/user'
 import {getRoleById} from '../mongoose/api/role'
 import passport from 'passport'
 import {serverConfig} from '../config/serverConfig'
+import signUpRoleId from '../const/roleAfterSignUp'
 
 const router = express.Router();
 
@@ -40,9 +41,10 @@ router.route('/signin')
     });
 
 router.route('/signup')
-    .post((req, res) => {
+    .post(async (req, res) => {
         const {username, password} = req.body;
-        const roleId = "5d345681b724f6be10861631";
+        const roleId = signUpRoleId;
+        const role = await getRoleById(roleId);
 
         return User.findOne({username}, (error, user) => {
             if (error) {
@@ -63,7 +65,7 @@ router.route('/signup')
                         }
                     });
                     passport.authenticate('local')(req, res, () => {
-                        res.json({username, role});
+                        res.json({username, role: role.name, groups: role.groups});
                     })
                 })
             }

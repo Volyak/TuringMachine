@@ -9,7 +9,7 @@ const template = (props) => {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Turing Machine</title>   
+        <title>Конечные автоматы</title>   
       </head>
       <body>
         <div id="root">

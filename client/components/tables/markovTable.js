@@ -90,13 +90,14 @@ class MarkovTable extends Component {
         const syntaxErrors = this.checkTableSyntax();
         if (syntaxErrors) {
             let result = "Решение не отправлено. " + syntaxErrors;
-            this.setState({errorLine: result});
+            this.setState({resultOfSending:'',errorLine: result});
             return false;
         }
         const {patterns, replacements} = this.state;
         postSolution(this.taskId, {table: {patterns, replacements}})
             .then(result => {
-                this.setState({resultOfSending: result})
+                const resultOfSending = result.isDone ? "Успешно выполнено": "Не пройдено";
+                this.setState({resultOfSending, errorLine: ''})
             })
     };
 
@@ -127,7 +128,7 @@ class MarkovTable extends Component {
         );
 
         const result = resultOfSending &&
-            <label>{this.state.resultOfSending.isDone.toString()}</label>;
+            <label>{this.state.resultOfSending}</label>;
 
         const error = errorLine &&
             <label>{this.state.errorLine}</label>;

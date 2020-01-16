@@ -82,9 +82,9 @@ class TuringTable extends Component {
             }
         }
 
-        result +=alphabetResult;
-        if(sellsResult)
-            result+="Проверьте следующие ячейки: "+ sellsResult;
+        result += alphabetResult;
+        if (sellsResult)
+            result += "Проверьте следующие ячейки: " + sellsResult;
         return result;
     };
 
@@ -105,16 +105,15 @@ class TuringTable extends Component {
             return false;
 
         const nextState = value.substring(moveCommandIndex + 1);
-
-        return !(isNaN(nextState) || nextState < 0 || nextState > cols.length);
+        return !(!nextState||isNaN(nextState) || nextState < 0 || nextState > cols.length);
     };
 
     checkUserAlphabet = () => {
         const {userAlphabet, startRows} = this.state;
 
-        for(let i=0;i<userAlphabet.length;i++)
-            for(let j=0;j<startRows.length;j++)
-                if(userAlphabet[i]===startRows[j])
+        for (let i = 0; i < userAlphabet.length; i++)
+            for (let j = 0; j < startRows.length; j++)
+                if (userAlphabet[i] === startRows[j])
                     return "Служебные символы содержат символы исходного алфавита. ";
         return "";
     };
@@ -201,14 +200,15 @@ class TuringTable extends Component {
         const syntaxErrors = this.checkTableSyntax();
         if (syntaxErrors) {
             let result = "Решение не отправлено. " + syntaxErrors;
-            this.setState({errorLine: result});
+            this.setState({resultOfSending: '',errorLine: result});
             return false;
         }
         const {userAlphabet} = this.state;
         const table = parseTable(this.state);
         postSolution(this.taskId, {table, userAlphabet})
             .then(result => {
-                this.setState({resultOfSending: result})
+                const resultOfSending = result.isDone ? "Успешно выполнено": "Не пройдено";
+                this.setState({resultOfSending, errorLine: ''})
             })
     };
 
@@ -241,7 +241,7 @@ class TuringTable extends Component {
         );
 
         const result = resultOfSending &&
-            <label>{this.state.resultOfSending.isDone.toString()}</label>;
+            <label>{this.state.resultOfSending}</label>;
 
         const error = errorLine &&
             <label>{this.state.errorLine}</label>;

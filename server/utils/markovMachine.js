@@ -11,14 +11,10 @@ export default function playTest(solution, test) {
 
     while (step < maxSteps) {
         let resultOfFind = findPatternAndStart(programOutput, patterns);
-        console.log("findPatternAndStart");
-        console.log(resultOfFind);
         if (!resultOfFind) {
             error = true;
         } else {
             let resultOfReplacement = makeReplacement(programOutput, resultOfFind, replacements);
-            console.log("makeReplacement");
-            console.log(resultOfReplacement);
             programOutput = resultOfReplacement.output;
             stop = resultOfReplacement.stop;
         }

@@ -28,6 +28,8 @@ class TuringSolution extends Component {
     render() {
         const {taskName, alphabet, description, userAlphabet, username, table, isDone} = this.state;
         const allAlphabet = alphabet + userAlphabet;
+        const result = isDone ? "успешно выполнено": "не пройдено";
+
         return (
             <div className={'solution'}>
                 <h3>{taskName}</h3>
@@ -35,7 +37,7 @@ class TuringSolution extends Component {
                 <div>Алфавит: {alphabet}</div>
                 <div>Служебные символы: {userAlphabet}</div>
                 <div>Отправил: {username}</div>
-                <div>Статус: {isDone.toString()}</div>
+                <div>Статус: {result}</div>
                 {
                     table &&
                     <table>

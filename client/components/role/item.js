@@ -1,14 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import connect from "react-redux/es/connect/connect";
 import rightChecker from "../../utilities/rightChecker";
 import groups from "../../const/groups";
 import rights from "../../const/rights";
 import * as actions from "../../redux/actions/roleActions";
 
+import "./css/item.css"
+
 const RoleListItem = (props) => {
     const {id, name, canDeleteRole, canUpdateRole} = props;
+
+    const updateRole = () => {
+        const {id} = props;
+        document.location.href = "/roles/edit/" + id;
+    };
 
     const deleteRole = () => {
         const {id, deleteRole} = props;
@@ -18,12 +25,14 @@ const RoleListItem = (props) => {
     return (
         <div className={'item'}>
             <Link to={'/roles/' + id}>{name}</Link>
-            {canUpdateRole &&
-                <Link to={'/roles/edit/' + id}>редактировать</Link>
-            }
-            {canDeleteRole &&
+            <div className={'item__buttons'}>
+                {canUpdateRole &&
+                <button onClick={updateRole}>редактировать</button>
+                }
+                {canDeleteRole &&
                 <button onClick={deleteRole}>X</button>
-            }
+                }
+            </div>
         </div>
     )
 };

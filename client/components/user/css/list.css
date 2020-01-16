@@ -1,0 +1,8 @@
+.user__list {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 89.7%;
+    padding: 5%;
+    background-color: white;
+}

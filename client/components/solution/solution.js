@@ -30,7 +30,7 @@ class Solution extends Component {
 
     render() {
         const {solution, taskType} = this.state;
-        if(!solution)
+        if (!solution)
             return null;
         return (
             <div className={'solution'}>
@@ -46,11 +46,12 @@ class Solution extends Component {
                     taskType === taskTypes.Markov.value &&
                     <MarkovSolution solution={solution}/>
                 }
-                { solution &&
+                {solution &&
                 <Link
                     to={{
                         pathname: `/tasks/${solution.task._id}`,
-                        state:{init: this.state.solution.solution.parcel}}}>
+                        state: {init: this.state.solution.solution.parcel}
+                    }}>
                     Продолжить решение
                 </Link>
                 }

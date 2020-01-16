@@ -7,6 +7,8 @@ import groups from '../../const/groups'
 import rights from '../../const/rights'
 import rightChecker from '../../utilities/rightChecker'
 
+import './css/item.css'
+
 class SolutionListItem extends Component {
     constructor(props) {
         super(props);
@@ -19,17 +21,20 @@ class SolutionListItem extends Component {
 
     render() {
         const {id, taskId, taskName, username, isDone, canDeleteSolution} = this.props;
-
+        const done = isDone ? "Выполнено": "";
         return (
             <div className={'item'}>
                 <Link to={'/tasks/' + taskId + '/solutions/' + id}>{taskName + ': ' + username}</Link>
                 {
                     isDone &&
-                    <div>DONE</div>
+                    <div>{done}</div>
                 }
-                {canDeleteSolution &&
-                <button onClick={this.deleteSolution}>X</button>
-                }
+                <div className={'item__buttons'}>
+
+                    {canDeleteSolution &&
+                    <button onClick={this.deleteSolution}>X</button>
+                    }
+                </div>
             </div>
         )
     }

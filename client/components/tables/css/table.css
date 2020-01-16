@@ -19,7 +19,7 @@
     color: lightskyblue;
 }
 
-.table-container > button:nth-child(3) {
+.table-container > button:last-child {
     align-self: flex-end;
     font-size: 1.5rem;
 }

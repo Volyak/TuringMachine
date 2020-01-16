@@ -7,10 +7,17 @@ import rightChecker from "../../utilities/rightChecker";
 import groups from "../../const/groups";
 import rights from "../../const/rights";
 
+import './css/item.css'
+
 class UserListItem extends Component {
     constructor(props) {
         super(props);
     }
+
+    updateUser = () => {
+        const {id} = this.props;
+        document.location.href = "/users/edit/" + id;
+    };
 
     deleteUser = () => {
         const {id, deleteUser} = this.props;
@@ -22,13 +29,15 @@ class UserListItem extends Component {
 
         return (
             <div className={'item'}>
-                <Link to={'/users/' + id}>{username + "   " + role}</Link>
-                {canUpdateUser &&
-                <Link to={'/users/edit/' + id}>редактировать</Link>
-                }
-                {canDeleteUser &&
-                <button onClick={this.deleteUser}>X</button>
-                }
+                <Link to={'/users/' + id}>{username + " Роль: " + role}</Link>
+                <div className={'item__buttons'}>
+                    {canUpdateUser &&
+                    <button onClick={this.updateUser}>редактировать</button>
+                    }
+                    {canDeleteUser &&
+                    <button onClick={this.deleteUser}>X</button>
+                    }
+                </div>
             </div>
         )
     }

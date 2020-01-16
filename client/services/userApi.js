@@ -27,6 +27,20 @@ export const getUser = (id) => {
         })
 };
 
+export const getUserSolutions = (id) => {
+    return fetch('/api/users/'+id+"/solutions", {
+        method: 'GET',
+        credentials: 'include'
+    })
+        .then(response => {
+            if(response.status === 200){
+                return response.json()
+                    .then(res => res.solutions);
+            } else {
+                throw response.status;
+            }
+        })
+};
 export const editUser = (id, user) => {
     return fetch('/api/users/' + id, {
         method: 'POST',

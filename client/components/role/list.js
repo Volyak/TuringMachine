@@ -8,20 +8,23 @@ import rightChecker from "../../utilities/rightChecker";
 import groups from "../../const/groups";
 import rights from "../../const/rights";
 import {Link} from "react-router-dom";
+import './css/list.css'
 
 class RoleList extends Component {
 
     componentDidMount() {
         this.props.getRoles();
     }
-
+    addRoleHandler = () => {
+        document.location.href = "/roles/add"
+    };
     render() {
         const {roles, canAddRole} = this.props;
         const List = getList(RoleListItem, roles);
         return (
-            <div>
+            <div className={'role__list'}>
                 {canAddRole &&
-                    <Link to={'/roles/add/'}>Добавить роль</Link>
+                    <button onClick={this.addRoleHandler}>Добавить роль</button>
                 }
                 <List/>
             </div>

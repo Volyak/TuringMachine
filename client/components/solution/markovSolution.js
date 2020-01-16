@@ -25,6 +25,7 @@ class MarkovSolution extends Component {
 
     render() {
         const {taskName, description, username, table, isDone} = this.state;
+        const result = isDone ? "успешно выполнено": "не пройдено";
 
         const body = table.patterns.map((pattern, i) =>
             <tr key={i}>
@@ -48,7 +49,7 @@ class MarkovSolution extends Component {
                 <h3>{taskName}</h3>
                 <div>{description}</div>
                 <div>Отправил: {username}</div>
-                <div>Статус: {isDone.toString()}</div>
+                <div>Статус: {result}</div>
                 {
                     table &&
                     <table>

@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {getRole, updateRole, addRole} from '../../services/roleApi'
 import getDefaultRole from '../../utilities/getDefaultRole'
+import groupTypes from "../../const/groupTypes";
+import rightTypes from "../../const/rightTypes";
 
 class ChangeRole extends Component {
     constructor(props) {
@@ -59,19 +61,24 @@ class ChangeRole extends Component {
         else {
             addRole({name, groups})
         }
+        document.location.href= "/roles";
     };
 
     render() {
         const {name, groups} = this.state;
         return (
             <div>
+                <h2>Название роли:</h2>
                 <input type="text" onChange={this.handleChangedName} placeholder="name" value={name}/>
+                <h2>Права: </h2>
                 {
                     groups.map((group, i) => <div key={i}>
-                        <h3>{group.name}</h3>
+                        <h3>{groupTypes[group.name].text}</h3>
                         {
                             group.rights.map((right, j) => <div key={j}>
-                                <div>{right.name + ' ' + right.priority}</div>
+                                <div>{rightTypes[right.name].text}
+                                </div>
+
                                 <input id={i + '_' + j} onChange={this.handleChangedPriority} type="number" min="0"
                                        max="10" step="1"
                                        value={right.priority}/>

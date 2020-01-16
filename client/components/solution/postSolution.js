@@ -25,6 +25,7 @@ class PostSolution extends Component {
 
     render() {
         const {taskName, description, username, table, isDone} = this.state;
+        const result = isDone ? "успешно выполнено": "не пройдено";
 
         const body = table.commands.map((command, i) =>
             <tr key={i}>
@@ -45,7 +46,7 @@ class PostSolution extends Component {
                 <h3>{taskName}</h3>
                 <div>{description}</div>
                 <div>Отправил: {username}</div>
-                <div>Статус: {isDone.toString()}</div>
+                <div>Статус: {result}</div>
                 {
                     table &&
                     <table>

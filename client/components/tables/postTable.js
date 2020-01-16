@@ -109,13 +109,14 @@ class PostTable extends Component {
         const syntaxErrors = this.checkTableSyntax();
         if (syntaxErrors) {
             let result = "Решение не отправлено. Проверьте следующие ячейки: " + syntaxErrors;
-            this.setState({errorLine: result});
+            this.setState({resultOfSending: '',errorLine: result});
             return false;
         }
         const {commands, goTo} = this.state;
         postSolution(this.taskId, {table: {commands, goTo}})
             .then(result => {
-                this.setState({resultOfSending: result})
+                const resultOfSending = result.isDone ? "Успешно выполнено": "Не пройдено";
+                this.setState({resultOfSending, errorLine: ''})
             })
     };
 
@@ -143,7 +144,7 @@ class PostTable extends Component {
         );
 
         const result = resultOfSending &&
-            <label>{this.state.resultOfSending.isDone.toString()}</label>;
+            <label>{this.state.resultOfSending}</label>;
 
         const error = errorLine &&
             <label>{this.state.errorLine}</label>;

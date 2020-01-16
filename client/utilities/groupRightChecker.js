@@ -5,9 +5,6 @@ export default (group, userGroups) => {
     switch (group) {
         case groups.Task:
             return check(group, userGroups) || rightCheck(groups.Solution, rights.Add, userGroups);
-        case groups.Solution:
-            return rightCheck(groups.Solution, rights.Update, userGroups) ||
-                rightCheck(groups.Solution, rights.Delete, userGroups);
         default:
             return check(group, userGroups);
     }
